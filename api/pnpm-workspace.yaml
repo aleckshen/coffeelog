@@ -1,0 +1,3 @@
+allowBuilds:
+  '@apollo/protobufjs': false
+  sqlite3: true
