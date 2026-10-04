@@ -1,0 +1,22 @@
+name: coffeelog
+
+services:
+  postgres:
+    image: postgres:18-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: coffeelog
+      POSTGRES_PASSWORD: coffeelog
+      POSTGRES_DB: coffeelog
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U coffeelog -d coffeelog"]
+      interval: 2s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  pgdata:

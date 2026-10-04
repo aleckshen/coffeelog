@@ -5,6 +5,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "db:up": "docker compose up -d --wait",
+    "db:down": "docker compose down",
+    "dev:api": "pnpm db:up && pnpm --dir api dev",
+    "dev:app": "pnpm --dir app start",
     "lint": "biome lint .",
     "format": "biome format --write .",
     "check": "biome check --write ."

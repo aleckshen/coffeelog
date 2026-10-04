@@ -4,8 +4,8 @@
   "description": "",
   "main": "src/index.ts",
   "scripts": {
-    "start": "node src/index.ts",
-    "dev": "node --watch src/index.ts",
+    "start": "node --env-file=.env src/index.ts",
+    "dev": "node --watch --env-file=.env src/index.ts",
     "typecheck": "tsc --noEmit"
   },
   "keywords": [],
@@ -15,8 +15,8 @@
   "dependencies": {
     "@apollo/server": "^5.5.1",
     "graphql": "^16.14.2",
-    "sequelize": "^6.37.8",
-    "sqlite3": "^6.0.1"
+    "pg": "^8.23.1",
+    "sequelize": "^6.37.8"
   },
   "devDependencies": {
     "@types/node": "^24.19.0",
