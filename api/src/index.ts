@@ -1,20 +1,10 @@
 import { ApolloServer } from "@apollo/server"
 import { startStandaloneServer } from "@apollo/server/standalone"
+import { resolvers } from "./resolvers/index.ts"
+import { typeDefs } from "./schema.ts"
 import { connectToDb } from "./util/db.ts"
 
 await connectToDb()
-
-const typeDefs = `#graphql
-  type Query {
-    hello: String
-  }
-`
-
-const resolvers = {
-  Query: {
-    hello: () => "hello world",
-  },
-}
 
 const server = new ApolloServer({ typeDefs, resolvers })
 
