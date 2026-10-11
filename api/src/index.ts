@@ -1,7 +1,7 @@
 import { ApolloServer } from "@apollo/server"
 import { startStandaloneServer } from "@apollo/server/standalone"
-import { resolvers } from "./resolvers/index.ts"
-import { typeDefs } from "./schema.ts"
+import { resolvers } from "./graphql/resolvers/index.ts"
+import { typeDefs } from "./graphql/schema.ts"
 import { connectToDb } from "./util/db.ts"
 
 await connectToDb()
