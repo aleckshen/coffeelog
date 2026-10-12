@@ -6,7 +6,11 @@
   "scripts": {
     "start": "node --env-file=.env src/index.ts",
     "dev": "node --watch --env-file=.env src/index.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "db:migrate": "node --env-file=.env src/util/migrate.ts up",
+    "db:migrate:undo": "node --env-file=.env src/util/migrate.ts down",
+    "db:migrate:status": "node --env-file=.env src/util/migrate.ts pending",
+    "db:migrate:create": "node --env-file=.env src/util/migrate.ts create"
   },
   "keywords": [],
   "author": "",
@@ -16,11 +20,11 @@
     "@apollo/server": "^5.5.1",
     "graphql": "^16.14.2",
     "pg": "^8.23.1",
-    "sequelize": "^6.37.8"
+    "sequelize": "^6.37.8",
+    "umzug": "^3.8.3"
   },
   "devDependencies": {
     "@types/node": "^24.19.0",
-    "sequelize-cli": "^6.6.5",
     "typescript": "^7.0.2"
   }
 }
