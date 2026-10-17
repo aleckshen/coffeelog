@@ -16,6 +16,8 @@ pnpm install
 pnpm --dir api install
 pnpm --dir app install
 cp api/.env.example api/.env
+pnpm db:up # start local postgres in docker
+pnpm --dir api db:migrate # create database tables
 ```
 
 ## how to run
@@ -29,10 +31,14 @@ pnpm dev:app # runs expo server
 
 ## scripts
 
-| Script                        | What it does                                  |
-| ----------------------------- | --------------------------------------------- |
-| `pnpm dev:api`                | start postgres and the api                    |
-| `pnpm dev:app`                | start expo dev server                         |
-| `pnpm db:up` / `pnpm db:down` | start/stop postgres                           |
-| `pnpm lint`                   | lint both projects with biome                 |
-| `pnpm check`                  | lint, format and sort imports (applies fixes) |
+| Script                                            | What it does                  |
+| ------------------------------------------------- | ----------------------------- |
+| `pnpm dev:api`                                    | start postgres and the api    |
+| `pnpm dev:app`                                    | start expo dev server         |
+| `pnpm db:up` / `pnpm db:down`                     | start/stop postgres           |
+| `pnpm lint`                                       | lint both projects with biome |
+| `pnpm check`                                      | lint, format and sort imports |
+| `pnpm --dir api db:migrate`                       | run pending migrations        |
+| `pnpm --dir api db:migrate:undo`                  | revert last migration         |
+| `pnpm --dir api db:migrate:status`                | list pending migrations       |
+| `pnpm --dir api db:migrate:create --name name.ts` | create a new migration file   |
