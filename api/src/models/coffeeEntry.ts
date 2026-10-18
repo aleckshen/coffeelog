@@ -5,7 +5,7 @@ import {
   type InferCreationAttributes,
   Model,
 } from "sequelize"
-import { sequelize } from "../util/db.ts"
+import { sequelize } from "../utils/db.ts"
 
 class CoffeeEntry extends Model<
   InferAttributes<CoffeeEntry>,

@@ -5,7 +5,7 @@ import {
   type InferCreationAttributes,
   Model,
 } from "sequelize"
-import { sequelize } from "../util/db.ts"
+import { sequelize } from "../utils/db.ts"
 
 class Cafe extends Model<InferAttributes<Cafe>, InferCreationAttributes<Cafe>> {
   declare id: CreationOptional<number>

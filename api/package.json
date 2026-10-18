@@ -7,10 +7,10 @@
     "start": "node --env-file=.env src/index.ts",
     "dev": "node --watch --env-file=.env src/index.ts",
     "typecheck": "tsc --noEmit",
-    "db:migrate": "node --env-file=.env src/util/migrate.ts up",
-    "db:migrate:undo": "node --env-file=.env src/util/migrate.ts down",
-    "db:migrate:status": "node --env-file=.env src/util/migrate.ts pending",
-    "db:migrate:create": "node --env-file=.env src/util/migrate.ts create"
+    "db:migrate": "node --env-file=.env src/utils/migrate.ts up",
+    "db:migrate:undo": "node --env-file=.env src/utils/migrate.ts down",
+    "db:migrate:status": "node --env-file=.env src/utils/migrate.ts pending",
+    "db:migrate:create": "node --env-file=.env src/utils/migrate.ts create"
   },
   "keywords": [],
   "author": "",
