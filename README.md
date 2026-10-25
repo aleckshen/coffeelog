@@ -2,6 +2,12 @@
 
 an app built to keep track of my coffee experiences, built with react expo and a node + apollo server (graphql) backend with sequelize and postgresSQL
 
+## system architecture
+
+![](./docs/system_architecture.png)
+
+this is a high level overview of the `coffelog` system design as a whole. I think the diagram itself is pretty self explanatory with most choices of tooling based on preference and learning purposes.
+
 ## prerequisites
 
 - install [mise](https://mise.jdx.dev) which installs and pins node and pnpm version
