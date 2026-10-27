@@ -11,12 +11,12 @@ export const sequelize = new Sequelize(databaseUrl, {
 
 export const migrator = new Umzug({
   migrations: {
-    glob: "src/migrations/*.ts",
+    glob: "src/db/migrations/*.ts",
   },
   context: sequelize.getQueryInterface(),
   storage: new SequelizeStorage({ sequelize, tableName: "migrations" }),
   logger: console,
-  create: { folder: "src/migrations" },
+  create: { folder: "src/db/migrations" },
 })
 
 export type Migration = typeof migrator._types.migration

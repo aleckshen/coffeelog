@@ -5,29 +5,29 @@ import {
   type InferCreationAttributes,
   Model,
 } from "sequelize"
-import { sequelize } from "../utils/db.ts"
+import { sequelize } from "../db.ts"
 
-class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
+class CoffeeTag extends Model<InferAttributes<CoffeeTag>, InferCreationAttributes<CoffeeTag>> {
   declare id: CreationOptional<number>
-  declare username: string
-  declare passwordHash: string
+  declare userId: number
+  declare tagName: string
   declare createdAt: CreationOptional<Date>
   declare updatedAt: CreationOptional<Date>
 }
 
-User.init(
+CoffeeTag.init(
   {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    username: {
-      type: DataTypes.STRING,
-      unique: true,
+    userId: {
+      type: DataTypes.INTEGER,
       allowNull: false,
+      references: { model: "users", key: "id" },
     },
-    passwordHash: {
+    tagName: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -37,8 +37,8 @@ User.init(
   {
     sequelize,
     underscored: true,
-    modelName: "user",
+    modelName: "coffeeTag",
   },
 )
 
-export default User
+export default CoffeeTag

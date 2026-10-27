@@ -1,5 +1,5 @@
 import { DataTypes, type InferAttributes, type InferCreationAttributes, Model } from "sequelize"
-import { sequelize } from "../utils/db.ts"
+import { sequelize } from "../db.ts"
 
 class EntryTag extends Model<InferAttributes<EntryTag>, InferCreationAttributes<EntryTag>> {
   declare entryId: number

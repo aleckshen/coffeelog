@@ -1,19 +1,20 @@
 import { DataTypes } from "sequelize"
-import type { Migration } from "../utils/db.ts"
+import type { Migration } from "../db.ts"
 
 export const up: Migration = async ({ context: queryInterface }) => {
-  await queryInterface.createTable("users", {
+  await queryInterface.createTable("coffee_tags", {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    username: {
-      type: DataTypes.STRING,
-      unique: true,
+    user_id: {
+      type: DataTypes.INTEGER,
       allowNull: false,
+      references: { model: "users", key: "id" },
+      onDelete: "CASCADE",
     },
-    password_hash: {
+    tag_name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -28,5 +29,5 @@ export const up: Migration = async ({ context: queryInterface }) => {
   })
 }
 export const down: Migration = async ({ context: queryInterface }) => {
-  await queryInterface.dropTable("users")
+  await queryInterface.dropTable("coffee_tags")
 }

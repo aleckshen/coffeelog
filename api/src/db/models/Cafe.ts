@@ -5,17 +5,18 @@ import {
   type InferCreationAttributes,
   Model,
 } from "sequelize"
-import { sequelize } from "../utils/db.ts"
+import { sequelize } from "../db.ts"
 
-class CoffeeTag extends Model<InferAttributes<CoffeeTag>, InferCreationAttributes<CoffeeTag>> {
+class Cafe extends Model<InferAttributes<Cafe>, InferCreationAttributes<Cafe>> {
   declare id: CreationOptional<number>
   declare userId: number
-  declare tagName: string
+  declare cafeName: string
+  declare location: string
   declare createdAt: CreationOptional<Date>
   declare updatedAt: CreationOptional<Date>
 }
 
-CoffeeTag.init(
+Cafe.init(
   {
     id: {
       type: DataTypes.INTEGER,
@@ -27,7 +28,11 @@ CoffeeTag.init(
       allowNull: false,
       references: { model: "users", key: "id" },
     },
-    tagName: {
+    cafeName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    location: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -37,8 +42,9 @@ CoffeeTag.init(
   {
     sequelize,
     underscored: true,
-    modelName: "coffeeTag",
+    modelName: "cafe",
+    tableName: "cafes",
   },
 )
 
-export default CoffeeTag
+export default Cafe
