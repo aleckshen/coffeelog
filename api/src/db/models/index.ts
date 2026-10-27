@@ -19,4 +19,4 @@ CoffeeTag.belongsTo(User)
 CoffeeEntry.belongsToMany(CoffeeTag, { through: EntryTag, foreignKey: "entryId" })
 CoffeeTag.belongsToMany(CoffeeEntry, { through: EntryTag, foreignKey: "tagId" })
 
-export const models = { Cafe, CoffeeTag, EntryTag, User, CoffeeEntry }
+export { Cafe, CoffeeEntry, CoffeeTag, EntryTag, User }
