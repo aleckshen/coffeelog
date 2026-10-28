@@ -29,4 +29,8 @@ export const entryTypeDefs = `#graphql
     updateEntry(id: ID!, input: EntryInput!): Entry
     deleteEntry(id: ID!): Boolean!
   }
+
+  extend type Cafe {
+    coffeeEntries: [Entry!]!
+  }
 `

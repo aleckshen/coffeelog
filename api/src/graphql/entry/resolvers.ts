@@ -50,4 +50,9 @@ export const entryResolvers = {
     createdAt: (entry: CoffeeEntry) => entry.createdAt.toISOString(),
     cafe: (entry: CoffeeEntry) => Cafe.findByPk(entry.cafeId),
   },
+
+  Cafe: {
+    coffeeEntries: (cafe: Cafe) =>
+      CoffeeEntry.findAll({ where: { cafeId: cafe.id }, order: [["createdAt", "DESC"]] }),
+  },
 }
