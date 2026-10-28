@@ -45,4 +45,8 @@ export const entryResolvers = {
       return count > 0
     },
   },
+
+  Entry: {
+    createdAt: (entry: CoffeeEntry) => entry.createdAt.toISOString(),
+  },
 }
