@@ -48,5 +48,6 @@ export const entryResolvers = {
 
   Entry: {
     createdAt: (entry: CoffeeEntry) => entry.createdAt.toISOString(),
+    cafe: (entry: CoffeeEntry) => Cafe.findByPk(entry.cafeId),
   },
 }

@@ -7,6 +7,7 @@ export const entryTypeDefs = `#graphql
     notes: String
     photoKey: String
     createdAt: String!
+    cafe: Cafe!
   }
 
   extend type Query {
