@@ -1,5 +1,5 @@
 import { GraphQLError } from "graphql"
-import { Cafe, CoffeeEntry } from "#models"
+import { Cafe, CoffeeEntry, CoffeeTag, EntryTag } from "#models"
 import type { Context } from "../context.ts"
 
 interface EntryInput {
@@ -49,6 +49,10 @@ export const entryResolvers = {
   Entry: {
     createdAt: (entry: CoffeeEntry) => entry.createdAt.toISOString(),
     cafe: (entry: CoffeeEntry) => Cafe.findByPk(entry.cafeId),
+    tags: async (entry: CoffeeEntry) => {
+      const links = await EntryTag.findAll({ where: { entryId: entry.id } })
+      return CoffeeTag.findAll({ where: { id: links.map((link) => link.tagId) } })
+    },
   },
 
   Cafe: {
