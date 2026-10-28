@@ -1,5 +1,5 @@
 export const cafeTypeDefs = `#graphql
-type Cafe {
+  type Cafe {
     id: ID!
     cafeName: String!
     location: String!
