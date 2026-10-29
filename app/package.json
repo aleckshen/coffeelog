@@ -9,8 +9,8 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "@expo/metro-runtime": "~57.0.16",
-    "expo": "~57.0.25",
+    "@expo/metro-runtime": "~57.0.17",
+    "expo": "~57.0.31",
     "expo-status-bar": "~57.0.1",
     "react": "19.2.3",
     "react-dom": "19.2.3",
