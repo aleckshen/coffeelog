@@ -23,6 +23,7 @@ export const entryTypeDefs = `#graphql
     rating: String!
     notes: String
     photoKey: String
+    tagIds: [ID!]
   }
 
   extend type Mutation {

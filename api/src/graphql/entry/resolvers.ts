@@ -9,6 +9,13 @@ interface EntryInput {
   rating: string
   notes?: string | null
   photoKey?: string | null
+  tagIds?: string[] | null
+}
+
+const findUserTags = async (tagIds: string[], userId: number) => {
+  const tags = await CoffeeTag.findAll({ where: { id: tagIds.map(Number), userId } })
+  if (tags.length !== new Set(tagIds).size) throw new GraphQLError("Tag not found")
+  return tags
 }
 
 export const entryResolvers = {
@@ -25,20 +32,31 @@ export const entryResolvers = {
       { input }: { input: EntryInput },
       { userId }: Context,
     ) => {
+      const { tagIds, ...fields } = input
       const cafe = await Cafe.findOne({ where: { id: Number(input.cafeId), userId } })
       if (!cafe) throw new GraphQLError("Cafe not found")
-      return CoffeeEntry.create({ ...input, cafeId: cafe.id, userId })
+      const tags = await findUserTags(tagIds ?? [], userId)
+
+      const entry = await CoffeeEntry.create({ ...fields, cafeId: cafe.id, userId })
+      await EntryTag.bulkCreate(tags.map((tag) => ({ entryId: entry.id, tagId: tag.id })))
+      return entry
     },
     updateEntry: async (
       _parent: unknown,
       { id, input }: { id: string; input: EntryInput },
       { userId }: Context,
     ) => {
+      const { tagIds, ...fields } = input
       const cafe = await Cafe.findOne({ where: { id: Number(input.cafeId), userId } })
       if (!cafe) throw new GraphQLError("Cafe not found")
       const entry = await CoffeeEntry.findOne({ where: { id: Number(id), userId } })
       if (!entry) return null
-      return entry.update({ ...input, cafeId: cafe.id })
+      const tags = await findUserTags(tagIds ?? [], userId)
+
+      await entry.update({ ...fields, cafeId: cafe.id })
+      await EntryTag.destroy({ where: { entryId: entry.id } })
+      await EntryTag.bulkCreate(tags.map((tag) => ({ entryId: entry.id, tagId: tag.id })))
+      return entry
     },
     deleteEntry: async (_parent: unknown, { id }: { id: string }, { userId }: Context) => {
       const count = await CoffeeEntry.destroy({ where: { id: Number(id), userId } })
