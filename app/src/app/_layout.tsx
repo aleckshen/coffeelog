@@ -16,7 +16,9 @@ export default function RootLayout() {
     <ApolloProvider client={client}>
       <ThemeProvider value={theme}>
         <StatusBar style="light" />
-        <Stack screenOptions={{ headerShown: false }} />
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="entry/new" options={{ presentation: "modal" }} />
+        </Stack>
       </ThemeProvider>
     </ApolloProvider>
   )
