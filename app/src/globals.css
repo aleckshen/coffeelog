@@ -12,4 +12,12 @@
   --color-primary-foreground: #3a3330;
   --color-success: #b5c48a;
   --color-destructive: #e8a39a;
+
+  --font-serif: "YoungSerif_400Regular";
+  --font-sans: "Figtree_400Regular";
+  --font-sans-medium: "Figtree_500Medium";
+  --font-sans-semibold: "Figtree_600SemiBold";
+  --font-sans-bold: "Figtree_700Bold";
+  --font-mono: "IBMPlexMono_400Regular";
+  --font-mono-medium: "IBMPlexMono_500Medium";
 }

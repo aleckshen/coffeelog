@@ -10,9 +10,13 @@
   },
   "dependencies": {
     "@apollo/client": "^4.3.5",
+    "@expo-google-fonts/figtree": "^0.4.1",
+    "@expo-google-fonts/ibm-plex-mono": "^0.4.1",
+    "@expo-google-fonts/young-serif": "^0.4.0",
     "@expo/metro-runtime": "~57.0.17",
     "expo": "~57.0.31",
     "expo-constants": "~57.0.22",
+    "expo-font": "~57.0.4",
     "expo-linking": "~57.0.13",
     "expo-router": "~57.0.29",
     "expo-status-bar": "~57.0.1",
