@@ -1,16 +1,20 @@
+import { router } from "expo-router"
 import type { BottomTabBarProps } from "expo-router/js-tabs"
+import { Plus } from "lucide-react-native"
+import { Fragment } from "react"
 import { Pressable, Text, View } from "react-native"
 import { useCSSVariable } from "uniwind"
 
 export function TabBar({ state, descriptors, navigation, insets }: BottomTabBarProps) {
-  const [active, inactive] = useCSSVariable([
+  const [active, inactive, onPrimary] = useCSSVariable([
     "--color-primary",
     "--color-muted-foreground",
+    "--color-primary-foreground",
   ]) as string[]
 
   return (
     <View
-      className="flex-row border-t border-border bg-card pt-2.5"
+      className="flex-row border-t border-border bg-card pt-2.5 items-center"
       style={{ paddingBottom: insets.bottom }}
     >
       {state.routes.map((route, index) => {
@@ -28,20 +32,33 @@ export function TabBar({ state, descriptors, navigation, insets }: BottomTabBarP
         }
 
         return (
-          <Pressable
-            accessibilityRole="tab"
-            accessibilityState={{ selected: focused }}
-            className="flex-1 items-center gap-1"
-            key={route.key}
-            onPress={onPress}
-          >
-            {options.tabBarIcon?.({ color, focused, size: 22 })}
-            <Text
-              className={`font-sans-semibold text-[11px] ${focused ? "text-primary" : "text-muted-foreground"}`}
+          <Fragment key={route.key}>
+            {index === 2 && (
+              <View className="w-16 items-center">
+                <Pressable
+                  accessibilityLabel="Log a coffee"
+                  accessibilityRole="button"
+                  className="size-14 items-center justify-center rounded-full bg-primary"
+                  onPress={() => router.push("/entry/new")}
+                >
+                  <Plus color={onPrimary} size={24} strokeWidth={2.2} />
+                </Pressable>
+              </View>
+            )}
+            <Pressable
+              accessibilityRole="tab"
+              accessibilityState={{ selected: focused }}
+              className="flex-1 items-center gap-1"
+              onPress={onPress}
             >
-              {options.title}
-            </Text>
-          </Pressable>
+              {options.tabBarIcon?.({ color, focused, size: 22 })}
+              <Text
+                className={`font-sans-semibold text-[11px] ${focused ? "text-primary" : "text-muted-foreground"}`}
+              >
+                {options.title}
+              </Text>
+            </Pressable>
+          </Fragment>
         )
       })}
     </View>
