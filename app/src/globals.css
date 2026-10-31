@@ -1,7 +1,7 @@
 @import "tailwindcss";
 @import "uniwind";
 
-@theme {
+@theme static {
   --color-background: #3a3330;
   --color-foreground: #f5efea;
   --color-card: #4a423e;
