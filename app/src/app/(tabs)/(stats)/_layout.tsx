@@ -1,5 +1,5 @@
 import { Stack } from "expo-router"
 
-export default function TagsLayout() {
-  return <Stack />
+export default function StatsLayout() {
+  return <Stack screenOptions={{ headerShown: false }} />
 }
