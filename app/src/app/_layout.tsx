@@ -1,3 +1,4 @@
+import "@/globals.css"
 import { ApolloProvider } from "@apollo/client/react"
 import { Stack } from "expo-router"
 import { StatusBar } from "expo-status-bar"
