@@ -4,6 +4,9 @@
     "slug": "app",
     "version": "1.0.0",
     "orientation": "portrait",
+    "experiments": {
+      "typedRoutes": true
+    },
     "icon": "./assets/icon.png",
     "scheme": "coffeelog",
     "userInterfaceStyle": "dark",
