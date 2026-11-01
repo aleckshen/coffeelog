@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from "@apollo/client/react"
 import { Suspense } from "react"
 import { AppText, Screen } from "@/components"
-import { CAFES } from "@/graphql/cafe"
+import { CAFES } from "@/features/cafe/cafe.queries"
 
 function CafesList() {
   const { data } = useSuspenseQuery(CAFES)
