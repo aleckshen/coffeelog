@@ -1,10 +1,10 @@
 import { useSuspenseQuery } from "@apollo/client/react"
 import { router } from "expo-router"
-import { Suspense } from "react"
 import { View } from "react-native"
-import { AppText, Button, Screen } from "@/components"
+import { AnimatedSuspense, AppText, Button, Screen } from "@/components"
 import { CAFES } from "@/features/cafe/cafe.queries"
 import { CafeRow } from "@/features/cafe/components/CafeRow/CafeRow"
+import { CafeRowSkeleton } from "@/features/cafe/components/CafeRowSkeleton/CafeRowSkeleton"
 
 function CafesList() {
   const { data } = useSuspenseQuery(CAFES)
@@ -21,9 +21,17 @@ export default function CafesScreen() {
       <AppText className="mb-4.5 text-sm text-muted-foreground">
         Every place you've logged a coffee.
       </AppText>
-      <Suspense fallback={<AppText className="text-muted-foreground">Loading...</AppText>}>
+      <AnimatedSuspense
+        fallback={
+          <View>
+            <CafeRowSkeleton />
+            <CafeRowSkeleton />
+            <CafeRowSkeleton />
+          </View>
+        }
+      >
         <CafesList />
-      </Suspense>
+      </AnimatedSuspense>
     </Screen>
   )
 }
