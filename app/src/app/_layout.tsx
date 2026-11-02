@@ -17,7 +17,7 @@ export default function RootLayout() {
       <ThemeProvider value={theme}>
         <StatusBar style="light" />
         <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="entry/new" options={{ presentation: "modal" }} />
+          <Stack.Screen name="(modals)" options={{ presentation: "modal" }} />
         </Stack>
       </ThemeProvider>
     </ApolloProvider>
