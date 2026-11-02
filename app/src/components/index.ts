@@ -1,4 +1,5 @@
 export * from "./composite/TabBar/TabBar"
+export * from "./generic/ListRow/ListRow"
 export * from "./generic/ModalHeader/ModalHeader"
 export * from "./primitives/AppText/AppText"
 export * from "./primitives/Button/Button"
