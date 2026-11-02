@@ -4,10 +4,11 @@ import { Suspense } from "react"
 import { View } from "react-native"
 import { AppText, Button, Screen } from "@/components"
 import { CAFES } from "@/features/cafe/cafe.queries"
+import { CafeRow } from "@/features/cafe/components/CafeRow/CafeRow"
 
 function CafesList() {
   const { data } = useSuspenseQuery(CAFES)
-  return data.cafes.map((cafe) => <AppText key={cafe.id}>{cafe.cafeName}</AppText>)
+  return data.cafes.map((cafe) => <CafeRow cafe={cafe} key={cafe.id} />)
 }
 
 export default function CafesScreen() {
@@ -17,6 +18,9 @@ export default function CafesScreen() {
         <AppText className="font-serif text-[28px]">Cafes</AppText>
         <Button label="Add cafe" onPress={() => router.push("/cafe/new")} />
       </View>
+      <AppText className="mb-4.5 text-sm text-muted-foreground">
+        Every place you've logged a coffee.
+      </AppText>
       <Suspense fallback={<AppText className="text-muted-foreground">Loading...</AppText>}>
         <CafesList />
       </Suspense>
