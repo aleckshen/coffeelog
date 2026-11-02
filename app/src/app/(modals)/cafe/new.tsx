@@ -1,9 +1,10 @@
-import { Text, View } from "react-native"
+import { View } from "react-native"
+import { ModalHeader } from "@/components"
 
 export default function NewCafeScreen() {
   return (
-    <View className="flex-1 items-center justify-center">
-      <Text className="font-serif text-2xl text-foreground">New cafe</Text>
+    <View className="flex-1 bg-card">
+      <ModalHeader title="New cafe" />
     </View>
   )
 }
