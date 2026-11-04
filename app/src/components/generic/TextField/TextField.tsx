@@ -4,9 +4,10 @@ import { AppText } from "../../primitives/AppText/AppText"
 
 type TextFieldProps = TextInputProps & {
   label: string
+  error?: string
 }
 
-export function TextField({ label, className, ...props }: TextFieldProps) {
+export function TextField({ label, error, className, ...props }: TextFieldProps) {
   return (
     <View className="gap-2">
       <AppText className="font-sans-semibold text-xs uppercase tracking-wider text-muted-foreground">
@@ -22,6 +23,7 @@ export function TextField({ label, className, ...props }: TextFieldProps) {
         selectionColorClassName="accent-primary"
         {...props}
       />
+      {error && <AppText className="text-xs text-destructive">{error}</AppText>}
     </View>
   )
 }
