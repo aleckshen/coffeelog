@@ -20,3 +20,17 @@ export const CAFES: TypedDocumentNode<{ cafes: Cafe[] }> = gql`
     } 
   }
 `
+
+export const CAFE: TypedDocumentNode<{ cafe: Cafe | null }, { id: string }> = gql`
+  query Cafe($id: ID!) {
+    cafe(id: $id) {
+      id
+      cafeName
+      location
+      coffeeEntries {
+        id
+        rating
+      }
+    }
+  }
+`
