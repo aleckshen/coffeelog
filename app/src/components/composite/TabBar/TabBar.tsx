@@ -53,7 +53,7 @@ export function TabBar({ state, descriptors, navigation, insets }: BottomTabBarP
             >
               {options.tabBarIcon?.({ color, focused, size: 22 })}
               <Text
-                className={`font-sans-semibold text-[11px] ${focused ? "text-primary" : "text-muted-foreground"}`}
+                className={`font-sans-semibold text-xs ${focused ? "text-primary" : "text-muted-foreground"}`}
               >
                 {options.title}
               </Text>

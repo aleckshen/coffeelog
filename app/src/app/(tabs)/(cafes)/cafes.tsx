@@ -15,7 +15,7 @@ export default function CafesScreen() {
   return (
     <Screen scroll>
       <View className="mt-2.5 mb-1 flex-row items-center justify-between">
-        <AppText className="font-serif text-[28px]">Cafes</AppText>
+        <AppText className="font-serif text-3xl">Cafes</AppText>
         <Button label="Add cafe" onPress={() => router.push("/cafe/new")} />
       </View>
       <AppText className="mb-4.5 text-sm text-muted-foreground">

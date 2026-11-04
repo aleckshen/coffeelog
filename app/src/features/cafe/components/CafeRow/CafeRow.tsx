@@ -15,10 +15,10 @@ export function CafeRow({ cafe }: CafeRowProps) {
     <ListRow>
       <View className="flex-1 gap-1">
         <AppText className="font-sans-semibold">{cafe.cafeName}</AppText>
-        <AppText className="text-[13px] text-muted-foreground">{cafe.location}</AppText>
+        <AppText className="text-sm text-muted-foreground">{cafe.location}</AppText>
       </View>
       <View className="items-end gap-0.5">
-        <AppText className="font-mono-medium text-[17px]">
+        <AppText className="font-mono-medium text-lg">
           {average === null ? "–" : average.toFixed(1)}
         </AppText>
         <AppText className="text-xs text-muted-foreground">

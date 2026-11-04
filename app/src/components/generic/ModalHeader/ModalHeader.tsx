@@ -17,7 +17,7 @@ export function ModalHeader({ title, onSave, saving }: ModalHeaderProps) {
           className="py-1.5 active:opacity-70"
           onPress={() => router.back()}
         >
-          <AppText className="font-sans-semibold text-[15px] text-muted-foreground">Cancel</AppText>
+          <AppText className="font-sans-semibold text-base text-muted-foreground">Cancel</AppText>
         </Pressable>
       </View>
       <AppText className="font-serif text-xl">{title}</AppText>
@@ -29,7 +29,7 @@ export function ModalHeader({ title, onSave, saving }: ModalHeaderProps) {
             disabled={saving}
             onPress={onSave}
           >
-            <AppText className="font-sans-semibold text-[15px] text-primary">Save</AppText>
+            <AppText className="font-sans-semibold text-base text-primary">Save</AppText>
           </Pressable>
         )}
       </View>
