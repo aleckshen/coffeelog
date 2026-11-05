@@ -1,3 +1,4 @@
+import { router } from "expo-router"
 import { View } from "react-native"
 import { AppText, ListRow } from "@/components"
 import type { Cafe } from "@/features/cafe/cafe.queries"
@@ -12,7 +13,7 @@ export function CafeRow({ cafe }: CafeRowProps) {
   const count = cafe.coffeeEntries.length
 
   return (
-    <ListRow>
+    <ListRow onPress={() => router.push({ pathname: "/cafe/[id]", params: { id: cafe.id } })}>
       <View className="flex-1 gap-1">
         <AppText className="font-sans-semibold">{cafe.cafeName}</AppText>
         <AppText className="text-sm text-muted-foreground">{cafe.location}</AppText>
