@@ -1,8 +1,9 @@
 import { useSuspenseQuery } from "@apollo/client/react"
 import { useLocalSearchParams } from "expo-router"
 import { View } from "react-native"
-import { AppText, BackButton, Screen, Skeleton, SuspenseSection } from "@/components"
+import { AppText, BackButton, Screen, Skeleton, StatRow, SuspenseSection } from "@/components"
 import { CAFE } from "@/features/cafe/cafe.queries"
+import { averageRating, formatPrice, formatRating, totalSpent } from "@/lib/stats"
 
 function CafeDetails({ id }: { id: string }) {
   const { data } = useSuspenseQuery(CAFE, { variables: { id } })
@@ -11,19 +12,32 @@ function CafeDetails({ id }: { id: string }) {
     return <AppText className="text-muted-foreground">Cafe not found.</AppText>
   }
 
+  const entries = data.cafe.coffeeEntries
+  const count = entries.length
+
   return (
     <View>
-      <AppText className="mt-2 font-serif text-3xl">{data.cafe.cafeName}</AppText>
+      <AppText className="mt-6.5 font-serif text-3xl">{data.cafe.cafeName}</AppText>
       <AppText className="text-muted-foreground">{data.cafe.location}</AppText>
+      <View className="mt-4.5">
+        <StatRow
+          stats={[
+            { value: String(count), label: count === 1 ? "Coffee" : "Coffees" },
+            { value: formatRating(averageRating(entries)), label: "Avg rating" },
+            { value: formatPrice(totalSpent(entries)), label: "Spent" },
+          ]}
+        />
+      </View>
     </View>
   )
 }
 
 function CafeDetailsSkeleton() {
   return (
-    <View className="mt-2 gap-2">
-      <Skeleton className="h-8 w-48" />
-      <Skeleton className="h-4 w-32" />
+    <View className="mt-6.5">
+      <Skeleton className="my-0.5 h-8 w-48" />
+      <Skeleton className="my-1 h-4 w-32" />
+      <Skeleton className="mt-4.5 h-18 w-full" />
     </View>
   )
 }
