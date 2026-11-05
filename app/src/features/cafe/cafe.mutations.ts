@@ -10,3 +10,16 @@ export const CREATE_CAFE: TypedDocumentNode<
     }
   }
 `
+
+export const UPDATE_CAFE: TypedDocumentNode<
+  { updateCafe: { id: string; cafeName: string; location: string } | null },
+  { id: string; cafeName: string; location: string }
+> = gql`
+  mutation UpdateCafe($id: ID!, $cafeName: String!, $location: String!) {
+    updateCafe(id: $id, cafeName: $cafeName, location: $location) {
+      id
+      cafeName
+      location
+    }
+  }
+`
