@@ -4,7 +4,7 @@ export type Cafe = {
   id: string
   cafeName: string
   location: string
-  coffeeEntries: { id: string; rating: string }[]
+  coffeeEntries: { id: string; rating: string; price: string }[]
 }
 
 export const CAFES: TypedDocumentNode<{ cafes: Cafe[] }> = gql`
@@ -16,6 +16,7 @@ export const CAFES: TypedDocumentNode<{ cafes: Cafe[] }> = gql`
       coffeeEntries {
         id
         rating
+        price
       }
     } 
   }
@@ -30,6 +31,7 @@ export const CAFE: TypedDocumentNode<{ cafe: Cafe | null }, { id: string }> = gq
       coffeeEntries {
         id
         rating
+        price
       }
     }
   }
