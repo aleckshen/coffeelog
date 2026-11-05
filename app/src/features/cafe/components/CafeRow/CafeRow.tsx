@@ -2,14 +2,14 @@ import { router } from "expo-router"
 import { View } from "react-native"
 import { AppText, ListRow } from "@/components"
 import type { Cafe } from "@/features/cafe/cafe.queries"
+import { averageRating, formatRating } from "@/lib/stats"
 
 type CafeRowProps = {
   cafe: Cafe
 }
 
 export function CafeRow({ cafe }: CafeRowProps) {
-  const ratings = cafe.coffeeEntries.map((entry) => Number(entry.rating))
-  const average = ratings.length ? ratings.reduce((sum, r) => sum + r, 0) / ratings.length : null
+  const average = averageRating(cafe.coffeeEntries)
   const count = cafe.coffeeEntries.length
 
   return (
@@ -19,9 +19,7 @@ export function CafeRow({ cafe }: CafeRowProps) {
         <AppText className="text-sm text-muted-foreground">{cafe.location}</AppText>
       </View>
       <View className="items-end gap-0.5">
-        <AppText className="font-mono-medium text-lg">
-          {average === null ? "–" : average.toFixed(1)}
-        </AppText>
+        <AppText className="font-mono-medium text-lg">{formatRating(average)}</AppText>
         <AppText className="text-xs text-muted-foreground">
           {count} {count === 1 ? "coffee" : "coffees"}
         </AppText>
