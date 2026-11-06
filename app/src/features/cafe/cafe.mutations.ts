@@ -23,3 +23,9 @@ export const UPDATE_CAFE: TypedDocumentNode<
     }
   }
 `
+
+export const DELETE_CAFE: TypedDocumentNode<{ deleteCafe: boolean }, { id: string }> = gql`
+  mutation DeleteCafe($id: ID!) {
+    deleteCafe(id: $id)
+  }
+`
