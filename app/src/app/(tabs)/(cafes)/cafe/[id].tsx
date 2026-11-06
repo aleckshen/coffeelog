@@ -1,7 +1,15 @@
 import { useSuspenseQuery } from "@apollo/client/react"
-import { useLocalSearchParams } from "expo-router"
+import { router, useLocalSearchParams } from "expo-router"
 import { View } from "react-native"
-import { AppText, BackButton, Screen, Skeleton, StatRow, SuspenseSection } from "@/components"
+import {
+  AppText,
+  BackButton,
+  Button,
+  Screen,
+  Skeleton,
+  StatRow,
+  SuspenseSection,
+} from "@/components"
 import { CAFE } from "@/features/cafe/cafe.queries"
 import { averageRating, formatPrice, formatRating, totalSpent } from "@/lib/stats"
 
@@ -47,7 +55,14 @@ export default function CafeScreen() {
 
   return (
     <Screen>
-      <BackButton label="Cafes" />
+      <View className="flex-row items-center justify-between">
+        <BackButton label="Cafes" />
+        <Button
+          label="Edit"
+          onPress={() => router.push({ pathname: "/cafe/edit/[id]", params: { id } })}
+        />
+      </View>
+
       <SuspenseSection errorMessage="Couldn't load this cafe." fallback={<CafeDetailsSkeleton />}>
         <CafeDetails id={id} />
       </SuspenseSection>

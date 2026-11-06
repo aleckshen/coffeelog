@@ -27,7 +27,7 @@ export function CafeForm({ title, defaultValues, onSave }: CafeFormProps) {
   })
 
   return (
-    <View className="flex-1 bg-card">
+    <View>
       <ModalHeader onSave={submit} saving={formState.isSubmitting} title={title} />
       <View className="gap-4.5 px-5 pt-4.5">
         <Controller
