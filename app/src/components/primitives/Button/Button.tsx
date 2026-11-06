@@ -8,7 +8,7 @@ const variants = {
     label: "font-sans-semibold text-sm text-primary",
   },
   block: {
-    container: "items-center rounded-xl border border-border py-3.5",
+    container: "items-center rounded-xl border border-border py-3.5 bg-muted",
     label: "font-sans-semibold text-base text-primary",
   },
 }
