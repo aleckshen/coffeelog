@@ -11,3 +11,9 @@ export const CREATE_TAG: TypedDocumentNode<
     }
   }
 `
+
+export const DELETE_TAG: TypedDocumentNode<{ deleteTag: boolean }, { id: string }> = gql`
+  mutation DeleteTag($id: ID!) {
+    deleteTag(id: $id)
+  }
+`
