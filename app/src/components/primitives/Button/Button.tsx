@@ -7,6 +7,10 @@ const variants = {
     container: "rounded-full border border-primary px-3.5 py-1.5",
     label: "font-sans-semibold text-sm text-primary",
   },
+  block: {
+    container: "items-center rounded-xl border border-border py-3.5",
+    label: "font-sans-semibold text-base text-primary",
+  },
 }
 
 type ButtonProps = PressableProps & {
