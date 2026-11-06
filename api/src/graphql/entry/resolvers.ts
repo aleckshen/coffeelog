@@ -77,4 +77,8 @@ export const entryResolvers = {
     coffeeEntries: (cafe: Cafe) =>
       CoffeeEntry.findAll({ where: { cafeId: cafe.id }, order: [["createdAt", "DESC"]] }),
   },
+
+  Tag: {
+    coffeeCount: (tag: CoffeeTag) => EntryTag.count({ where: { tagId: tag.id } }),
+  },
 }

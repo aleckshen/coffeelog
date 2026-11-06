@@ -35,4 +35,8 @@ export const entryTypeDefs = `#graphql
   extend type Cafe {
     coffeeEntries: [Entry!]!
   }
+
+  extend type Tag {
+    coffeeCount: Int!
+  }
 `
