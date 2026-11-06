@@ -1,6 +1,7 @@
 export * from "./composite/TabBar/TabBar"
 export * from "./generic/AnimatedSuspense/AnimatedSuspense"
 export * from "./generic/BackButton/BackButton"
+export * from "./generic/ConfirmDialog/ConfirmDialog"
 export * from "./generic/ErrorMessage/ErrorMessage"
 export * from "./generic/ListRow/ListRow"
 export * from "./generic/ModalHeader/ModalHeader"
