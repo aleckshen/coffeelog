@@ -25,7 +25,7 @@ export function ConfirmDialog({
 }: ConfirmDialogProps) {
   return (
     <Modal animationType="fade" onRequestClose={onCancel} transparent visible={visible}>
-      <View className="flex-1 justify-center bg-black/60 px-6">
+      <View className="flex-1 justify-center bg-black/40 px-6">
         <View className="gap-3 rounded-3xl bg-card p-6">
           <AppText className="font-serif text-2xl">{title}</AppText>
           <AppText className="text-muted-foreground">{message}</AppText>
