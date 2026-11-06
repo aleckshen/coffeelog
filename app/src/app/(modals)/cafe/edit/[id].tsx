@@ -1,7 +1,8 @@
 import { useMutation, useSuspenseQuery } from "@apollo/client/react"
 import { router, useLocalSearchParams } from "expo-router"
-import { Alert, View } from "react-native"
-import { AppText, Button, SuspenseSection } from "@/components"
+import { useState } from "react"
+import { View } from "react-native"
+import { AppText, Button, ConfirmDialog, SuspenseSection } from "@/components"
 import { DELETE_CAFE, UPDATE_CAFE } from "@/features/cafe/cafe.mutations"
 import { CAFE, CAFES } from "@/features/cafe/cafe.queries"
 import { CafeForm } from "@/features/cafe/components/CafeForm/CafeForm"
@@ -9,7 +10,9 @@ import { CafeForm } from "@/features/cafe/components/CafeForm/CafeForm"
 function EditCafeForm({ id }: { id: string }) {
   const { data } = useSuspenseQuery(CAFE, { variables: { id } })
   const [updateCafe] = useMutation(UPDATE_CAFE)
-  const [deleteCafe] = useMutation(DELETE_CAFE, { refetchQueries: [CAFES] })
+  const [deleteCafe, { loading: deleting }] = useMutation(DELETE_CAFE, { refetchQueries: [CAFES] })
+  const [confirmOpen, setConfirmOpen] = useState(false)
+  const [deleteError, setDeleteError] = useState<string>()
 
   if (!data.cafe) {
     return <AppText className="p-5 text-muted-foreground">Cafe not found.</AppText>
@@ -18,29 +21,17 @@ function EditCafeForm({ id }: { id: string }) {
   const cafe = data.cafe
   const count = cafe.coffeeEntries.length
 
-  function confirmDelete() {
-    Alert.alert(
-      `Delete ${cafe.cafeName}?`,
-      count
-        ? `Its ${count} ${count === 1 ? "coffee" : "coffees"} will be deleted too. This can't be undone.`
-        : "This can't be undone.",
-      [
-        { text: "Cancel", style: "cancel" },
-        {
-          text: "Delete cafe",
-          style: "destructive",
-          onPress: async () => {
-            try {
-              await deleteCafe({ variables: { id } })
-              router.dismissTo("/cafes")
-            } catch {
-              Alert.alert("Couldn't delete the cafe.", "Try again.")
-            }
-          },
-        },
-      ],
-    )
+  async function handleDelete() {
+    setDeleteError(undefined)
+    try {
+      await deleteCafe({ variables: { id } })
+      setConfirmOpen(false)
+      router.dismissTo("/cafes")
+    } catch {
+      setDeleteError("Couldn't delete the cafe. Try again.")
+    }
   }
+
   return (
     <>
       <CafeForm
@@ -49,8 +40,25 @@ function EditCafeForm({ id }: { id: string }) {
         title="Edit cafe"
       />
       <View className="px-5 pt-8">
-        <Button label="Delete cafe" onPress={confirmDelete} variant="block" />
+        <Button label="Delete cafe" onPress={() => setConfirmOpen(true)} variant="block" />
       </View>
+      <ConfirmDialog
+        confirming={deleting}
+        confirmLabel="Delete cafe"
+        error={deleteError}
+        message={
+          count
+            ? `Its ${count} ${count === 1 ? "coffee" : "coffees"} will be deleted too. This can't be undone.`
+            : "This can't be undone."
+        }
+        onCancel={() => {
+          setConfirmOpen(false)
+          setDeleteError(undefined)
+        }}
+        onConfirm={handleDelete}
+        title={`Delete ${cafe.cafeName}?`}
+        visible={confirmOpen}
+      />
     </>
   )
 }
