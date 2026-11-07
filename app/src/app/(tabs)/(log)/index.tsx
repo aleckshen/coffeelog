@@ -1,9 +1,12 @@
 import { useSuspenseQuery } from "@apollo/client/react"
+import { useState } from "react"
 import { View } from "react-native"
 import { AppText, Screen, Skeleton, StatRow, SuspenseSection } from "@/components"
 import { CoffeeRow } from "@/features/entry/components/CoffeeRow/CoffeeRow"
 import { CoffeeRowSkeleton } from "@/features/entry/components/CoffeeRowSkeleton/CoffeeRowSkeleton"
 import { type CoffeeEntry, ENTRIES } from "@/features/entry/entry.queries"
+import { TagFilterBar } from "@/features/tag/components/TagFilterBar/TagFilterBar"
+import { TagFilterSheet } from "@/features/tag/components/TagFilterSheet/TagFilterSheet"
 import { averageRating, dayLabel, formatPrice, formatRating, totalSpent } from "@/lib/stats"
 
 function groupByDay(entries: CoffeeEntry[]) {
@@ -32,7 +35,7 @@ function LogStats() {
   )
 }
 
-function CoffeeList() {
+function CoffeeList({ selectedTagIds }: { selectedTagIds: string[] }) {
   const { data } = useSuspenseQuery(ENTRIES)
 
   if (!data.entries.length) {
@@ -43,7 +46,21 @@ function CoffeeList() {
     )
   }
 
-  return groupByDay(data.entries).map((group) => (
+  const entries = data.entries.filter((entry) =>
+    selectedTagIds.every((id) => entry.tags.some((tag) => tag.id === id)),
+  )
+
+  if (!entries.length) {
+    return (
+      <AppText className="py-4.5 text-sm text-muted-foreground">
+        {selectedTagIds.length === 1
+          ? "No coffees have this tag yet."
+          : "No coffees have all of these tags yet."}
+      </AppText>
+    )
+  }
+
+  return groupByDay(entries).map((group) => (
     <View key={group.label}>
       <AppText className="mt-5 mb-1.5 font-sans-semibold text-xs uppercase tracking-widest text-muted-foreground">
         {group.label}
@@ -60,6 +77,9 @@ function CoffeeList() {
 }
 
 export default function LogScreen() {
+  const [selectedTagIds, setSelectedTagIds] = useState<string[]>([])
+  const [sheetOpen, setSheetOpen] = useState(false)
+
   return (
     <Screen scroll>
       <AppText className="mt-2.5 font-serif text-3xl">
@@ -70,6 +90,7 @@ export default function LogScreen() {
         fallback={
           <View className="mt-4.5">
             <Skeleton className="h-18 w-full" />
+            <Skeleton className="mt-5 h-8 w-32 rounded-full" />
             <View className="mt-5">
               <CoffeeRowSkeleton />
               <CoffeeRowSkeleton />
@@ -80,9 +101,23 @@ export default function LogScreen() {
       >
         <View className="mt-4.5">
           <LogStats />
-          <CoffeeList />
+          <TagFilterBar
+            onOpen={() => setSheetOpen(true)}
+            onRemove={(id) => setSelectedTagIds((ids) => ids.filter((x) => x !== id))}
+            selectedTagIds={selectedTagIds}
+          />
+          <CoffeeList selectedTagIds={selectedTagIds} />
         </View>
       </SuspenseSection>
+      <TagFilterSheet
+        onCancel={() => setSheetOpen(false)}
+        onDone={(ids) => {
+          setSelectedTagIds(ids)
+          setSheetOpen(false)
+        }}
+        selectedTagIds={selectedTagIds}
+        visible={sheetOpen}
+      />
     </Screen>
   )
 }
