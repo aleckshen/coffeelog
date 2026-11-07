@@ -1,14 +1,64 @@
-import { useSuspenseQuery } from "@apollo/client/react"
+import { useMutation, useSuspenseQuery } from "@apollo/client/react"
 import { router } from "expo-router"
+import { useState } from "react"
 import { View } from "react-native"
-import { AppText, Button, Screen, SuspenseSection } from "@/components"
+import { AppText, Button, ConfirmDialog, Screen, SuspenseSection } from "@/components"
 import { TagRow } from "@/features/tag/components/TagRow/TagRow"
 import { TagRowSkeleton } from "@/features/tag/components/TagRowSkeleton/TagRowSkeleton"
-import { TAGS } from "@/features/tag/tag.queries"
+import { DELETE_TAG } from "@/features/tag/tag.mutations"
+import { TAGS, type Tag } from "@/features/tag/tag.queries"
 
 function TagsList() {
   const { data } = useSuspenseQuery(TAGS)
-  return data.tags.map((tag) => <TagRow key={tag.id} tag={tag} />)
+  const [deleteTag, { loading: deleting }] = useMutation(DELETE_TAG, { refetchQueries: [TAGS] })
+  const [tagToDelete, setTagToDelete] = useState<Tag | null>(null)
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const [deleteError, setDeleteError] = useState<string>()
+
+  function openDialog(tag: Tag) {
+    setTagToDelete(tag)
+    setDialogOpen(true)
+  }
+
+  function closeDialog() {
+    setDialogOpen(false)
+    setDeleteError(undefined)
+  }
+
+  async function handleDelete() {
+    if (!tagToDelete) return
+    setDeleteError(undefined)
+    try {
+      await deleteTag({ variables: { id: tagToDelete.id } })
+      closeDialog()
+    } catch {
+      setDeleteError("Couldn't delete the tag. Try again.")
+    }
+  }
+
+  const count = tagToDelete?.coffeeCount ?? 0
+
+  return (
+    <View>
+      {data.tags.map((tag) => (
+        <TagRow key={tag.id} onDelete={() => openDialog(tag)} tag={tag} />
+      ))}
+      <ConfirmDialog
+        confirming={deleting}
+        confirmLabel="Delete tag"
+        error={deleteError}
+        message={
+          count
+            ? `It will be removed from ${count} ${count === 1 ? "coffee" : "coffees"}. The coffees stay.`
+            : "This can't be undone."
+        }
+        onCancel={closeDialog}
+        onConfirm={handleDelete}
+        title={`Delete "${tagToDelete?.tagName}"?`}
+        visible={dialogOpen}
+      />
+    </View>
+  )
 }
 
 export default function TagsScreen() {
