@@ -1,10 +1,10 @@
 import { useSuspenseQuery } from "@apollo/client/react"
 import { View } from "react-native"
-import { AppText, Screen, SuspenseSection } from "@/components"
+import { AppText, Screen, Skeleton, StatRow, SuspenseSection } from "@/components"
 import { CoffeeRow } from "@/features/entry/components/CoffeeRow/CoffeeRow"
 import { CoffeeRowSkeleton } from "@/features/entry/components/CoffeeRowSkeleton/CoffeeRowSkeleton"
 import { type CoffeeEntry, ENTRIES } from "@/features/entry/entry.queries"
-import { dayLabel } from "@/lib/stats"
+import { averageRating, dayLabel, formatPrice, formatRating, totalSpent } from "@/lib/stats"
 
 function groupByDay(entries: CoffeeEntry[]) {
   const groups: { label: string; entries: CoffeeEntry[] }[] = []
@@ -15,6 +15,21 @@ function groupByDay(entries: CoffeeEntry[]) {
     else groups.push({ label, entries: [entry] })
   }
   return groups
+}
+
+function LogStats() {
+  const { data } = useSuspenseQuery(ENTRIES)
+  const entries = data.entries
+
+  return (
+    <StatRow
+      stats={[
+        { value: String(entries.length), label: entries.length === 1 ? "Coffee" : "Coffees" },
+        { value: formatRating(averageRating(entries)), label: "Avg rating" },
+        { value: formatPrice(totalSpent(entries)), label: "Spent" },
+      ]}
+    />
+  )
 }
 
 function CoffeeList() {
@@ -53,14 +68,20 @@ export default function LogScreen() {
       <SuspenseSection
         errorMessage="Couldn't load your coffees."
         fallback={
-          <View className="mt-5">
-            <CoffeeRowSkeleton />
-            <CoffeeRowSkeleton />
-            <CoffeeRowSkeleton />
+          <View className="mt-4.5">
+            <Skeleton className="h-18 w-full" />
+            <View className="mt-5">
+              <CoffeeRowSkeleton />
+              <CoffeeRowSkeleton />
+              <CoffeeRowSkeleton />
+            </View>
           </View>
         }
       >
-        <CoffeeList />
+        <View className="mt-4.5">
+          <LogStats />
+          <CoffeeList />
+        </View>
       </SuspenseSection>
     </Screen>
   )
