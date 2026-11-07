@@ -1,6 +1,7 @@
 import { View } from "react-native"
 import { AppText, Chip, ListRow } from "@/components"
 import type { CoffeeEntry } from "@/features/entry/entry.queries"
+import { fitOnOneLine } from "@/lib/chips"
 import { formatPrice, formatRating } from "@/lib/stats"
 
 type CoffeeRowProps = {
@@ -8,21 +9,8 @@ type CoffeeRowProps = {
   subtitle: string
 }
 
-const CHIP_CHARS = 18
-
-function visibleTags(tags: CoffeeEntry["tags"]) {
-  const shown: CoffeeEntry["tags"] = []
-  let used = 0
-  for (const tag of tags) {
-    if (shown.length && used + tag.tagName.length > CHIP_CHARS) break
-    shown.push(tag)
-    used += tag.tagName.length
-  }
-  return shown
-}
-
 export function CoffeeRow({ entry, subtitle }: CoffeeRowProps) {
-  const shown = visibleTags(entry.tags)
+  const shown = fitOnOneLine(entry.tags, (tag) => tag.tagName)
   const hidden = entry.tags.length - shown.length
 
   return (
