@@ -56,7 +56,7 @@ export default function CafeScreen() {
   return (
     <Screen>
       <View className="flex-row items-center justify-between">
-        <BackButton label="Cafes" />
+        <BackButton label="cafes" />
         <Button
           label="Edit"
           onPress={() => router.push({ pathname: "/cafe/edit/[id]", params: { id } })}

@@ -65,7 +65,7 @@ export default function TagsScreen() {
   return (
     <Screen scroll>
       <View className="mt-2.5 mb-4 flex-row items-center justify-between">
-        <AppText className="font-serif text-3xl">Tags</AppText>
+        <AppText className="font-serif text-3xl">[ tags ]</AppText>
         <Button label="Add tag" onPress={() => router.push("/tag/new")} />
       </View>
       <AppText className="mb-4.5 text-sm text-muted-foreground">
