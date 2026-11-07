@@ -6,16 +6,24 @@ type ModalHeaderProps = {
   title: string
   onSave?: () => void
   saving?: boolean
+  saveLabel?: string
+  onCancel?: () => void
 }
 
-export function ModalHeader({ title, onSave, saving }: ModalHeaderProps) {
+export function ModalHeader({
+  title,
+  onSave,
+  saving,
+  saveLabel = "Save",
+  onCancel = () => router.back(),
+}: ModalHeaderProps) {
   return (
     <View className="flex-row items-center border-b border-border px-5 pt-4 pb-2.5">
       <View className="flex-1 items-start">
         <Pressable
           accessibilityRole="button"
           className="py-1.5 active:opacity-70"
-          onPress={() => router.back()}
+          onPress={onCancel}
         >
           <AppText className="font-sans-semibold text-base text-muted-foreground">Cancel</AppText>
         </Pressable>
@@ -29,7 +37,7 @@ export function ModalHeader({ title, onSave, saving }: ModalHeaderProps) {
             disabled={saving}
             onPress={onSave}
           >
-            <AppText className="font-sans-semibold text-base text-primary">Save</AppText>
+            <AppText className="font-sans-semibold text-base text-primary">{saveLabel}</AppText>
           </Pressable>
         )}
       </View>
