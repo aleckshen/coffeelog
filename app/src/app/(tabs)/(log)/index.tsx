@@ -1,5 +1,6 @@
 import { useSuspenseQuery } from "@apollo/client/react"
-import { useState } from "react"
+import { router, useLocalSearchParams } from "expo-router"
+import { useEffect, useState } from "react"
 import { View } from "react-native"
 import { AppText, Screen, Skeleton, StatRow, SuspenseSection } from "@/components"
 import { CoffeeRow } from "@/features/entry/components/CoffeeRow/CoffeeRow"
@@ -79,6 +80,13 @@ function CoffeeList({ selectedTagIds }: { selectedTagIds: string[] }) {
 export default function LogScreen() {
   const [selectedTagIds, setSelectedTagIds] = useState<string[]>([])
   const [sheetOpen, setSheetOpen] = useState(false)
+  const { tag } = useLocalSearchParams<{ tag?: string }>()
+
+  useEffect(() => {
+    if (!tag) return
+    setSelectedTagIds([tag])
+    router.setParams({ tag: undefined })
+  }, [tag])
 
   return (
     <Screen scroll>

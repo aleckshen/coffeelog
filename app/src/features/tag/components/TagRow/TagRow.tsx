@@ -4,12 +4,13 @@ import type { Tag } from "@/features/tag/tag.queries"
 
 type TagRowProps = {
   tag: Tag
+  onPress: () => void
   onDelete: () => void
 }
 
-export function TagRow({ tag, onDelete }: TagRowProps) {
+export function TagRow({ tag, onDelete, onPress }: TagRowProps) {
   return (
-    <ListRow disabled>
+    <ListRow onPress={onPress}>
       <AppText className="flex-1 font-sans-semibold">{tag.tagName}</AppText>
       <AppText className="text-sm text-muted-foreground">
         {tag.coffeeCount} {tag.coffeeCount === 1 ? "coffee" : "coffees"}

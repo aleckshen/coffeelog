@@ -41,7 +41,12 @@ function TagsList() {
   return (
     <View>
       {data.tags.map((tag) => (
-        <TagRow key={tag.id} onDelete={() => openDialog(tag)} tag={tag} />
+        <TagRow
+          key={tag.id}
+          onDelete={() => openDialog(tag)}
+          onPress={() => router.navigate({ pathname: "/", params: { tag: tag.id } })}
+          tag={tag}
+        />
       ))}
       <ConfirmDialog
         confirming={deleting}
