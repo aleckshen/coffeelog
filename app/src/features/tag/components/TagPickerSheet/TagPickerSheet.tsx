@@ -4,14 +4,21 @@ import { Modal, Pressable, View } from "react-native"
 import { AppText, ListRow, ModalHeader, Skeleton, SuspenseSection, TextField } from "@/components"
 import { TAGS } from "@/features/tag/tag.queries"
 
-type TagFilterSheetProps = {
+type TagPickerSheetProps = {
   visible: boolean
+  title: string
   selectedTagIds: string[]
   onDone: (tagIds: string[]) => void
   onCancel: () => void
 }
 
-export function TagFilterSheet({ visible, selectedTagIds, onDone, onCancel }: TagFilterSheetProps) {
+export function TagPickerSheet({
+  visible,
+  title,
+  selectedTagIds,
+  onDone,
+  onCancel,
+}: TagPickerSheetProps) {
   return (
     <Modal
       animationType="slide"
@@ -19,12 +26,22 @@ export function TagFilterSheet({ visible, selectedTagIds, onDone, onCancel }: Ta
       presentationStyle="pageSheet"
       visible={visible}
     >
-      <SheetBody onCancel={onCancel} onDone={onDone} selectedTagIds={selectedTagIds} />
+      <SheetBody
+        onCancel={onCancel}
+        onDone={onDone}
+        selectedTagIds={selectedTagIds}
+        title={title}
+      />
     </Modal>
   )
 }
 
-function SheetBody({ selectedTagIds, onDone, onCancel }: Omit<TagFilterSheetProps, "visible">) {
+function SheetBody({
+  title,
+  selectedTagIds,
+  onDone,
+  onCancel,
+}: Omit<TagPickerSheetProps, "visible">) {
   const [picked, setPicked] = useState(selectedTagIds)
   const [search, setSearch] = useState("")
 
@@ -40,7 +57,7 @@ function SheetBody({ selectedTagIds, onDone, onCancel }: Omit<TagFilterSheetProp
         onCancel={onCancel}
         onSave={() => onDone(picked)}
         saveLabel="Done"
-        title="Filter by tag"
+        title={title}
       />
       <View className="px-5 pt-4.5">
         <TextField

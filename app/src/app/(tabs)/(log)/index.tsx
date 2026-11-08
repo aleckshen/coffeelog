@@ -7,7 +7,7 @@ import { CoffeeRow } from "@/features/entry/components/CoffeeRow/CoffeeRow"
 import { CoffeeRowSkeleton } from "@/features/entry/components/CoffeeRowSkeleton/CoffeeRowSkeleton"
 import { type CoffeeEntry, ENTRIES } from "@/features/entry/entry.queries"
 import { TagFilterBar } from "@/features/tag/components/TagFilterBar/TagFilterBar"
-import { TagFilterSheet } from "@/features/tag/components/TagFilterSheet/TagFilterSheet"
+import { TagPickerSheet } from "@/features/tag/components/TagPickerSheet/TagPickerSheet"
 import { averageRating, dayLabel, formatPrice, formatRating, totalSpent } from "@/lib/stats"
 
 function groupByDay(entries: CoffeeEntry[]) {
@@ -117,13 +117,14 @@ export default function LogScreen() {
           <CoffeeList selectedTagIds={selectedTagIds} />
         </View>
       </SuspenseSection>
-      <TagFilterSheet
+      <TagPickerSheet
         onCancel={() => setSheetOpen(false)}
         onDone={(ids) => {
           setSelectedTagIds(ids)
           setSheetOpen(false)
         }}
         selectedTagIds={selectedTagIds}
+        title="Filter by tag"
         visible={sheetOpen}
       />
     </Screen>
