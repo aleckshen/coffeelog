@@ -1,5 +1,7 @@
 import { useSuspenseQuery } from "@apollo/client/react"
+import { ChevronDown, type LucideIcon, Plus, X } from "lucide-react-native"
 import { Pressable, View } from "react-native"
+import { useCSSVariable } from "uniwind"
 import { AppText } from "@/components"
 import { TAGS } from "@/features/tag/tag.queries"
 import { fitOnOneLine } from "@/lib/chips"
@@ -18,7 +20,7 @@ export function TagFilterBar({ selectedTagIds, onOpen, onRemove }: TagFilterBarP
   if (!selected.length) {
     return (
       <View className="mt-5 flex-row">
-        <FilterButton label="Filter by tag ▾" onPress={onOpen} />
+        <FilterButton after={ChevronDown} label="Filter by tag" onPress={onOpen} />
       </View>
     )
   }
@@ -32,13 +34,14 @@ export function TagFilterBar({ selectedTagIds, onOpen, onRemove }: TagFilterBarP
         <FilterButton
           accessibilityLabel={`Remove ${tag.tagName} filter`}
           active
+          after={X}
           key={tag.id}
-          label={`${tag.tagName} ✕`}
+          label={tag.tagName}
           onPress={() => onRemove(tag.id)}
         />
       ))}
       {hidden > 0 && <FilterButton active label={`+${hidden}`} onPress={onOpen} />}
-      <FilterButton label="+ Tag" onPress={onOpen} />
+      <FilterButton before={Plus} label="Tag" onPress={onOpen} />
     </View>
   )
 }
@@ -48,19 +51,35 @@ type FilterButtonProps = {
   onPress: () => void
   active?: boolean
   accessibilityLabel?: string
+  before?: LucideIcon
+  after?: LucideIcon
 }
 
-function FilterButton({ label, onPress, active = false, accessibilityLabel }: FilterButtonProps) {
+function FilterButton({
+  label,
+  onPress,
+  active = false,
+  accessibilityLabel,
+  before: Before,
+  after: After,
+}: FilterButtonProps) {
+  const [onPrimary, muted] = useCSSVariable([
+    "--color-primary-foreground",
+    "--color-muted-foreground",
+  ]) as string[]
+  const iconColor = active ? onPrimary : muted
+
   return (
     <Pressable
       accessibilityLabel={accessibilityLabel}
       accessibilityRole="button"
       className={cn(
-        "rounded-full border px-3 py-1.5 active:opacity-70",
+        "flex-row items-center gap-1 rounded-full border px-3 py-1.5 active:opacity-70",
         active ? "border-primary bg-primary" : "border-border",
       )}
       onPress={onPress}
     >
+      {Before && <Before color={iconColor} size={14} strokeWidth={2.25} />}
       <AppText
         className={cn(
           "font-sans-semibold text-sm",
@@ -69,6 +88,7 @@ function FilterButton({ label, onPress, active = false, accessibilityLabel }: Fi
       >
         {label}
       </AppText>
+      {After && <After color={iconColor} size={14} strokeWidth={2.25} />}
     </Pressable>
   )
 }
