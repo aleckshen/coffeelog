@@ -70,7 +70,7 @@ function CoffeeList({ selectedTagIds }: { selectedTagIds: string[] }) {
         <CoffeeRow
           entry={entry}
           key={entry.id}
-          subtitle={`${entry.cafe.cafeName} · ${entry.cafe.location}`}
+          subtitle={[entry.cafe.cafeName, entry.cafe.location]}
         />
       ))}
     </View>

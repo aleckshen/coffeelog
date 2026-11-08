@@ -1,12 +1,13 @@
+import { router } from "expo-router"
 import { View } from "react-native"
-import { AppText, Chip, ListRow } from "@/components"
+import { AppText, Chip, ListRow, MetaLine } from "@/components"
 import type { CoffeeEntry } from "@/features/entry/entry.queries"
 import { fitOnOneLine } from "@/lib/chips"
 import { formatPrice, formatRating } from "@/lib/stats"
 
 type CoffeeRowProps = {
   entry: CoffeeEntry
-  subtitle: string
+  subtitle: string[]
 }
 
 export function CoffeeRow({ entry, subtitle }: CoffeeRowProps) {
@@ -14,7 +15,7 @@ export function CoffeeRow({ entry, subtitle }: CoffeeRowProps) {
   const hidden = entry.tags.length - shown.length
 
   return (
-    <ListRow disabled>
+    <ListRow onPress={() => router.push({ pathname: "/entry/[id]", params: { id: entry.id } })}>
       <View className="size-12 items-center justify-center rounded-full bg-muted">
         <AppText className="font-serif text-xl text-muted-foreground">
           {entry.coffeeName[0]}
@@ -22,7 +23,7 @@ export function CoffeeRow({ entry, subtitle }: CoffeeRowProps) {
       </View>
       <View className="flex-1 gap-1">
         <AppText className="font-sans-semibold">{entry.coffeeName}</AppText>
-        <AppText className="text-sm text-muted-foreground">{subtitle}</AppText>
+        <MetaLine parts={subtitle} small />
         {entry.tags.length > 0 && (
           <View className="flex-row gap-1.5 overflow-hidden">
             {shown.map((tag) => (
