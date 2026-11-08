@@ -37,3 +37,29 @@ export const ENTRIES: TypedDocumentNode<{ entries: CoffeeEntry[] }> = gql`
     }
   }
 `
+
+export type CoffeeEntryDetails = CoffeeEntry & {
+  notes: string | null
+}
+
+export const ENTRY: TypedDocumentNode<{ entry: CoffeeEntryDetails | null }, { id: string }> = gql`
+  query Entry($id: ID!) {
+    entry(id: $id) {
+      id
+      coffeeName
+      price
+      rating
+      notes
+      createdAt
+      cafe {
+        id
+        cafeName
+        location
+      }
+      tags {
+        id
+        tagName
+      }
+    }
+  }
+`

@@ -27,3 +27,13 @@ export function dayLabel(iso: string): string {
     month: "short",
   })
 }
+
+export function formatWhen(iso: string): string {
+  return new Date(iso).toLocaleString("en-NZ", {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+    hour: "numeric",
+    minute: "2-digit",
+  })
+}
