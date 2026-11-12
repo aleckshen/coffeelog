@@ -1,10 +1,11 @@
 import { useSuspenseQuery } from "@apollo/client/react"
-import { useLocalSearchParams } from "expo-router"
+import { router, useLocalSearchParams, useSegments } from "expo-router"
 import type { ReactNode } from "react"
 import { View } from "react-native"
 import {
   AppText,
   BackButton,
+  Button,
   Chip,
   MetaLine,
   Screen,
@@ -81,11 +82,17 @@ function CoffeeDetailsSkeleton() {
 
 export default function CoffeeScreen() {
   const { id } = useLocalSearchParams<{ id: string }>()
+  const segments = useSegments()
+  const fromCafes = segments[1] === "(cafes)"
 
   return (
     <Screen scroll>
       <View className="flex-row items-center justify-between">
-        <BackButton label="log" />
+        <BackButton label={fromCafes ? "cafe" : "log"} />
+        <Button
+          label="Edit"
+          onPress={() => router.push({ pathname: "/entry/edit/[id]", params: { id } })}
+        />
       </View>
       <SuspenseSection
         errorMessage="Couldn't load this coffee."

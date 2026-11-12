@@ -1,4 +1,4 @@
-import { router } from "expo-router"
+import { router, useSegments } from "expo-router"
 import { View } from "react-native"
 import { AppText, Chip, ListRow, MetaLine } from "@/components"
 import type { CoffeeEntry } from "@/features/entry/entry.queries"
@@ -11,11 +11,15 @@ type CoffeeRowProps = {
 }
 
 export function CoffeeRow({ entry, subtitle }: CoffeeRowProps) {
+  const segments = useSegments()
+  // The Coffee screen lives in both the Log and Cafes stacks; open it in the one you're in.
+  const pathname =
+    segments[1] === "(cafes)" ? "/(tabs)/(cafes)/entry/[id]" : "/(tabs)/(log)/entry/[id]"
   const shown = fitOnOneLine(entry.tags, (tag) => tag.tagName)
   const hidden = entry.tags.length - shown.length
 
   return (
-    <ListRow onPress={() => router.push({ pathname: "/entry/[id]", params: { id: entry.id } })}>
+    <ListRow onPress={() => router.push({ pathname, params: { id: entry.id } })}>
       <View className="size-12 items-center justify-center rounded-full bg-muted">
         <AppText className="font-serif text-xl text-muted-foreground">
           {entry.coffeeName[0]}
