@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client/react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { router } from "expo-router"
-import { useState } from "react"
+import { type ReactNode, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { ScrollView, View } from "react-native"
 import { AppText, Chip, ModalHeader, RatingSlider, SelectField, TextField } from "@/components"
@@ -15,9 +15,10 @@ type EntryFormProps = {
   title: string
   defaultValues: EntryFormValues
   onSave: (values: EntryFormValues) => Promise<unknown>
+  footer?: ReactNode
 }
 
-export function EntryForm({ title, defaultValues, onSave }: EntryFormProps) {
+export function EntryForm({ title, defaultValues, onSave, footer }: EntryFormProps) {
   const { control, handleSubmit, setError, formState } = useForm<EntryFormValues>({
     resolver: zodResolver(entrySchema),
     defaultValues,
@@ -164,6 +165,7 @@ export function EntryForm({ title, defaultValues, onSave }: EntryFormProps) {
         {formState.errors.root && (
           <AppText className="text-xs text-destructive">{formState.errors.root.message}</AppText>
         )}
+        {footer}
       </ScrollView>
     </View>
   )

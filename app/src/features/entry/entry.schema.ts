@@ -1,4 +1,5 @@
 import { z } from "zod"
+import type { EntryInput } from "@/features/entry/entry.mutations"
 
 export const entrySchema = z.object({
   coffeeName: z.string().trim().min(1, "Give the coffee a name."),
@@ -13,3 +14,7 @@ export const entrySchema = z.object({
 })
 
 export type EntryFormValues = z.infer<typeof entrySchema>
+
+export function toEntryInput(values: EntryFormValues): EntryInput {
+  return { ...values, rating: values.rating.toFixed(1), notes: values.notes || null }
+}

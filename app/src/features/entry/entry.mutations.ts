@@ -19,3 +19,20 @@ export const CREATE_ENTRY: TypedDocumentNode<
     }
   }
 `
+
+export const UPDATE_ENTRY: TypedDocumentNode<
+  { updateEntry: { id: string } | null },
+  { id: string; input: EntryInput }
+> = gql`
+  mutation UpdateEntry($id: ID!, $input: EntryInput!) {
+    updateEntry(id: $id, input: $input) {
+      id
+    }
+  }
+`
+
+export const DELETE_ENTRY: TypedDocumentNode<{ deleteEntry: boolean }, { id: string }> = gql`
+  mutation DeleteEntry($id: ID!) {
+    deleteEntry(id: $id)
+  }
+`
