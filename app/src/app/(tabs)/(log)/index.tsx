@@ -90,13 +90,14 @@ export default function LogScreen() {
 
   return (
     <Screen scroll>
-      <AppText className="mt-2.5 font-serif text-3xl">
-        [ coffee<AppText className="font-serif text-3xl text-primary">log</AppText> ]
+      <AppText className="mt-2.5 mb-4 font-serif text-3xl">[ coffeelog ]</AppText>
+      <AppText className="mb-4.5 text-sm text-muted-foreground">
+        Every coffee you've logged!
       </AppText>
       <SuspenseSection
         errorMessage="Couldn't load your coffees."
         fallback={
-          <View className="mt-4.5">
+          <View>
             <Skeleton className="h-18 w-full" />
             <Skeleton className="mt-5 h-8 w-32 rounded-full" />
             <View className="mt-5">
@@ -107,7 +108,7 @@ export default function LogScreen() {
           </View>
         }
       >
-        <View className="mt-4.5">
+        <View>
           <LogStats />
           <TagFilterBar
             onOpen={() => setSheetOpen(true)}
