@@ -1,4 +1,5 @@
 import { gql, type TypedDocumentNode } from "@apollo/client"
+import type { CoffeeEntry } from "@/features/entry/entry.queries"
 
 export type Cafe = {
   id: string
@@ -22,7 +23,11 @@ export const CAFES: TypedDocumentNode<{ cafes: Cafe[] }> = gql`
   }
 `
 
-export const CAFE: TypedDocumentNode<{ cafe: Cafe | null }, { id: string }> = gql`
+export type CafeDetails = Omit<Cafe, "coffeeEntries"> & {
+  coffeeEntries: CoffeeEntry[]
+}
+
+export const CAFE: TypedDocumentNode<{ cafe: CafeDetails | null }, { id: string }> = gql`
   query Cafe($id: ID!) {
     cafe(id: $id) {
       id
@@ -30,8 +35,19 @@ export const CAFE: TypedDocumentNode<{ cafe: Cafe | null }, { id: string }> = gq
       location
       coffeeEntries {
         id
+        coffeeName
         rating
         price
+        createdAt
+        cafe {
+          id
+          cafeName
+          location
+        }
+        tags {
+          id
+          tagName
+        }
       }
     }
   }

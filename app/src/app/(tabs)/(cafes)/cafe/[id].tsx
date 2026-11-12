@@ -11,7 +11,8 @@ import {
   SuspenseSection,
 } from "@/components"
 import { CAFE } from "@/features/cafe/cafe.queries"
-import { averageRating, formatPrice, formatRating, totalSpent } from "@/lib/stats"
+import { CoffeeRow } from "@/features/entry/components/CoffeeRow/CoffeeRow"
+import { averageRating, dayLabel, formatPrice, formatRating, totalSpent } from "@/lib/stats"
 
 function CafeDetails({ id }: { id: string }) {
   const { data } = useSuspenseQuery(CAFE, { variables: { id } })
@@ -36,6 +37,18 @@ function CafeDetails({ id }: { id: string }) {
           ]}
         />
       </View>
+      <AppText className="mt-5 mb-1.5 font-sans-semibold text-xs uppercase tracking-widest text-muted-foreground">
+        Coffees here
+      </AppText>
+      {entries.length ? (
+        entries.map((entry) => (
+          <CoffeeRow entry={entry} key={entry.id} subtitle={[dayLabel(entry.createdAt)]} />
+        ))
+      ) : (
+        <AppText className="py-4.5 text-sm text-muted-foreground">
+          No coffees logged here yet. Tap + to log one.
+        </AppText>
+      )}
     </View>
   )
 }
@@ -54,7 +67,7 @@ export default function CafeScreen() {
   const { id } = useLocalSearchParams<{ id: string }>()
 
   return (
-    <Screen>
+    <Screen scroll>
       <View className="flex-row items-center justify-between">
         <BackButton label="cafes" />
         <Button
