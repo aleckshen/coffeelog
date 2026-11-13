@@ -3,6 +3,7 @@ import { router, useLocalSearchParams } from "expo-router"
 import { useEffect, useState } from "react"
 import { View } from "react-native"
 import { AppText, Screen, Skeleton, StatRow, SuspenseSection } from "@/components"
+import { AccountButton } from "@/features/auth/components/AccountButton/AccountButton"
 import { CoffeeRow } from "@/features/entry/components/CoffeeRow/CoffeeRow"
 import { CoffeeRowSkeleton } from "@/features/entry/components/CoffeeRowSkeleton/CoffeeRowSkeleton"
 import { type CoffeeEntry, ENTRIES } from "@/features/entry/entry.queries"
@@ -90,7 +91,10 @@ export default function LogScreen() {
 
   return (
     <Screen scroll>
-      <AppText className="mt-2.5 mb-4 font-serif text-3xl">[ coffeelog ]</AppText>
+      <View className="mt-2.5 mb-4 flex-row items-center justify-between">
+        <AppText className="font-serif text-3xl">[ coffeelog ]</AppText>
+        <AccountButton />
+      </View>
       <AppText className="mb-4.5 text-sm text-muted-foreground">
         Every coffee you've logged!
       </AppText>
