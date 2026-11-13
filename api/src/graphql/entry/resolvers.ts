@@ -1,6 +1,6 @@
 import { GraphQLError } from "graphql"
 import { Cafe, CoffeeEntry, CoffeeTag, EntryTag } from "#models"
-import type { Context } from "../context.ts"
+import { authed } from "../../lib/auth.ts"
 
 interface EntryInput {
   coffeeName: string
@@ -20,18 +20,16 @@ const findUserTags = async (tagIds: string[], userId: number) => {
 
 export const entryResolvers = {
   Query: {
-    entries: (_parent: unknown, _args: unknown, { userId }: Context) =>
+    entries: authed((_parent, _args: unknown, { userId }) =>
       CoffeeEntry.findAll({ where: { userId }, order: [["createdAt", "DESC"]] }),
-    entry: (_parent: unknown, { id }: { id: string }, { userId }: Context) =>
+    ),
+    entry: authed((_parent, { id }: { id: string }, { userId }) =>
       CoffeeEntry.findOne({ where: { id: Number(id), userId } }),
+    ),
   },
 
   Mutation: {
-    createEntry: async (
-      _parent: unknown,
-      { input }: { input: EntryInput },
-      { userId }: Context,
-    ) => {
+    createEntry: authed(async (_parent, { input }: { input: EntryInput }, { userId }) => {
       const { tagIds, ...fields } = input
       const cafe = await Cafe.findOne({ where: { id: Number(input.cafeId), userId } })
       if (!cafe) throw new GraphQLError("Cafe not found")
@@ -40,28 +38,26 @@ export const entryResolvers = {
       const entry = await CoffeeEntry.create({ ...fields, cafeId: cafe.id, userId })
       await EntryTag.bulkCreate(tags.map((tag) => ({ entryId: entry.id, tagId: tag.id })))
       return entry
-    },
-    updateEntry: async (
-      _parent: unknown,
-      { id, input }: { id: string; input: EntryInput },
-      { userId }: Context,
-    ) => {
-      const { tagIds, ...fields } = input
-      const cafe = await Cafe.findOne({ where: { id: Number(input.cafeId), userId } })
-      if (!cafe) throw new GraphQLError("Cafe not found")
-      const entry = await CoffeeEntry.findOne({ where: { id: Number(id), userId } })
-      if (!entry) return null
-      const tags = await findUserTags(tagIds ?? [], userId)
+    }),
+    updateEntry: authed(
+      async (_parent, { id, input }: { id: string; input: EntryInput }, { userId }) => {
+        const { tagIds, ...fields } = input
+        const cafe = await Cafe.findOne({ where: { id: Number(input.cafeId), userId } })
+        if (!cafe) throw new GraphQLError("Cafe not found")
+        const entry = await CoffeeEntry.findOne({ where: { id: Number(id), userId } })
+        if (!entry) return null
+        const tags = await findUserTags(tagIds ?? [], userId)
 
-      await entry.update({ ...fields, cafeId: cafe.id })
-      await EntryTag.destroy({ where: { entryId: entry.id } })
-      await EntryTag.bulkCreate(tags.map((tag) => ({ entryId: entry.id, tagId: tag.id })))
-      return entry
-    },
-    deleteEntry: async (_parent: unknown, { id }: { id: string }, { userId }: Context) => {
+        await entry.update({ ...fields, cafeId: cafe.id })
+        await EntryTag.destroy({ where: { entryId: entry.id } })
+        await EntryTag.bulkCreate(tags.map((tag) => ({ entryId: entry.id, tagId: tag.id })))
+        return entry
+      },
+    ),
+    deleteEntry: authed(async (_parent, { id }: { id: string }, { userId }) => {
       const count = await CoffeeEntry.destroy({ where: { id: Number(id), userId } })
       return count > 0
-    },
+    }),
   },
 
   Entry: {

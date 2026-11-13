@@ -7,7 +7,8 @@ type Credentials = { username: string; password: string }
 
 export const userResolvers = {
   Query: {
-    me: (_parent: unknown, _args: unknown, { userId }: Context) => User.findByPk(userId),
+    me: (_parent: unknown, _args: unknown, { userId }: Context) =>
+      userId === null ? null : User.findByPk(userId),
   },
 
   Mutation: {

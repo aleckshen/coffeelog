@@ -1,32 +1,35 @@
 import { Cafe } from "#models"
-import type { Context } from "../context.ts"
+import { authed } from "../../lib/auth.ts"
 
 export const cafeResolvers = {
   Query: {
-    cafes: (_parent: unknown, _args: unknown, { userId }: Context) =>
+    cafes: authed((_parent, _args: unknown, { userId }) =>
       Cafe.findAll({ where: { userId }, order: [["cafeName", "ASC"]] }),
-    cafe: (_parent: unknown, { id }: { id: string }, { userId }: Context) =>
+    ),
+    cafe: authed((_parent, { id }: { id: string }, { userId }) =>
       Cafe.findOne({ where: { id: Number(id), userId } }),
+    ),
   },
 
   Mutation: {
-    createCafe: (
-      _parent: unknown,
-      { cafeName, location }: { cafeName: string; location: string },
-      { userId }: Context,
-    ) => Cafe.create({ cafeName, location, userId }),
-    updateCafe: async (
-      _parent: unknown,
-      { id, cafeName, location }: { id: string; cafeName: string; location: string },
-      { userId }: Context,
-    ) => {
-      const cafe = await Cafe.findOne({ where: { id: Number(id), userId } })
-      if (!cafe) return null
-      return cafe.update({ cafeName, location })
-    },
-    deleteCafe: async (_parent: unknown, { id }: { id: string }, { userId }: Context) => {
+    createCafe: authed(
+      (_parent, { cafeName, location }: { cafeName: string; location: string }, { userId }) =>
+        Cafe.create({ cafeName, location, userId }),
+    ),
+    updateCafe: authed(
+      async (
+        _parent,
+        { id, cafeName, location }: { id: string; cafeName: string; location: string },
+        { userId },
+      ) => {
+        const cafe = await Cafe.findOne({ where: { id: Number(id), userId } })
+        if (!cafe) return null
+        return cafe.update({ cafeName, location })
+      },
+    ),
+    deleteCafe: authed(async (_parent, { id }: { id: string }, { userId }) => {
       const count = await Cafe.destroy({ where: { id: Number(id), userId } })
       return count > 0
-    },
+    }),
   },
 }

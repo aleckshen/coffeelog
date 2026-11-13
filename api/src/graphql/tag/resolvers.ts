@@ -1,18 +1,20 @@
 import { CoffeeTag } from "#models"
-import type { Context } from "../context.ts"
+import { authed } from "../../lib/auth.ts"
 
 export const tagResolvers = {
   Query: {
-    tags: (_parent: unknown, _args: unknown, { userId }: Context) =>
+    tags: authed((_parent, _args: unknown, { userId }) =>
       CoffeeTag.findAll({ where: { userId }, order: [["tagName", "ASC"]] }),
+    ),
   },
 
   Mutation: {
-    createTag: (_parent: unknown, { tagName }: { tagName: string }, { userId }: Context) =>
+    createTag: authed((_parent, { tagName }: { tagName: string }, { userId }) =>
       CoffeeTag.create({ tagName, userId }),
-    deleteTag: async (_parent: unknown, { id }: { id: string }, { userId }: Context) => {
+    ),
+    deleteTag: authed(async (_parent, { id }: { id: string }, { userId }) => {
       const count = await CoffeeTag.destroy({ where: { id: Number(id), userId } })
       return count > 0
-    },
+    }),
   },
 }

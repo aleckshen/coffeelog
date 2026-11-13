@@ -1,5 +1,7 @@
 import bcrypt from "bcryptjs"
+import { GraphQLError } from "graphql"
 import jwt from "jsonwebtoken"
+import type { Context } from "../graphql/context.ts"
 
 const SALT_ROUNDS = 10
 const secret = process.env.JWT_SECRET ?? ""
@@ -26,5 +28,16 @@ export function readToken(token: string): number | null {
     return null
   } catch {
     return null
+  }
+}
+
+export function authed<Args, Result>(
+  resolve: (parent: unknown, args: Args, context: { userId: number }) => Result,
+) {
+  return (parent: unknown, args: Args, context: Context) => {
+    if (context.userId === null) {
+      throw new GraphQLError("Log in first.", { extensions: { code: "UNAUTHENTICATED" } })
+    }
+    return resolve(parent, args, { userId: context.userId })
   }
 }
