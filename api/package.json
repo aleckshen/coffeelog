@@ -13,7 +13,8 @@
     "db:migrate": "node --env-file=.env src/db/migrate.ts up",
     "db:migrate:undo": "node --env-file=.env src/db/migrate.ts down",
     "db:migrate:status": "node --env-file=.env src/db/migrate.ts pending",
-    "db:migrate:create": "node --env-file=.env src/db/migrate.ts create"
+    "db:migrate:create": "node --env-file=.env src/db/migrate.ts create",
+    "set-password": "node --env-file=.env src/db/scripts/set-password.ts"
   },
   "keywords": [],
   "author": "",
