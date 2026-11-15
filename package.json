@@ -9,9 +9,8 @@
     "db:down": "docker compose down",
     "dev:api": "pnpm db:up && pnpm --dir api dev",
     "dev:app": "pnpm --dir app start",
-    "lint": "biome lint .",
-    "format": "biome format --write .",
-    "check": "biome check --write ."
+    "check": "biome check .",
+    "check:fix": "biome check . --write"
   },
   "keywords": [],
   "author": "",
