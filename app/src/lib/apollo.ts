@@ -29,7 +29,11 @@ const logoutLink = new ErrorLink(({ error }) => {
 })
 
 export const client = new ApolloClient({
-  link: ApolloLink.from([logoutLink, authLink, new HttpLink({ uri: `http://${host}:4000/` })]),
+  link: ApolloLink.from([
+    logoutLink,
+    authLink,
+    new HttpLink({ uri: process.env.EXPO_PUBLIC_API_URL ?? `http://${host}:4000/` }),
+  ]),
   cache: new InMemoryCache(),
 })
 
