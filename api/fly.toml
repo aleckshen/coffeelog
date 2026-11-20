@@ -11,6 +11,9 @@ primary_region = 'syd'
 [deploy]
   release_command = 'node src/db/migrate.ts up'
 
+[env]
+  NODE_ENV = 'production'
+
 [http_service]
   internal_port = 4000
   force_https = true
