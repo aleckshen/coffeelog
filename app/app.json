@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "app",
-    "slug": "app",
+    "name": "coffeelog",
+    "slug": "coffeelog",
     "version": "1.0.0",
     "orientation": "portrait",
     "experiments": {
@@ -11,7 +11,9 @@
     "scheme": "coffeelog",
     "userInterfaceStyle": "dark",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.aleckshen.coffeelog",
+      "appleTeamId": "QLP55F6H5S"
     },
     "android": {
       "adaptiveIcon": {
