@@ -22,11 +22,16 @@ const r2 = new S3Client({
   region: "auto",
   endpoint: `https://${accountId}.r2.cloudflarestorage.com`,
   credentials: { accessKeyId, secretAccessKey },
+  requestChecksumCalculation: "WHEN_REQUIRED",
+  responseChecksumValidation: "WHEN_REQUIRED",
 })
 
 export function photoUploadUrl(key: string) {
   const command = new PutObjectCommand({ Bucket: bucket, Key: key, ContentType: "image/jpeg" })
-  return getSignedUrl(r2, command, { expiresIn: 300 })
+  return getSignedUrl(r2, command, {
+    expiresIn: 300,
+    signableHeaders: new Set(["content-type"]),
+  })
 }
 
 export function photoViewUrl(key: string) {
