@@ -9,6 +9,7 @@ export const entryTypeDefs = `#graphql
     createdAt: String!
     cafe: Cafe!
     tags: [Tag!]!
+    photoUrl: String
   }
 
   extend type Query {

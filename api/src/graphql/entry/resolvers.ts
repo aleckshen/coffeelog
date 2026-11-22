@@ -1,6 +1,7 @@
 import { GraphQLError } from "graphql"
 import { Cafe, CoffeeEntry, CoffeeTag, EntryTag } from "#models"
 import { authed } from "../../lib/auth.ts"
+import { deletePhoto, photoViewUrl } from "../../lib/r2.ts"
 
 interface EntryInput {
   coffeeName: string
@@ -18,6 +19,15 @@ const findUserTags = async (tagIds: string[], userId: number) => {
   return tags
 }
 
+const checkPhotoKey = (photoKey: string | null | undefined, userId: number) => {
+  if (photoKey && !photoKey.startsWith(`users/${userId}/`)) {
+    throw new GraphQLError("Photo not found")
+  }
+}
+
+const deleteOldPhoto = (key: string) =>
+  deletePhoto(key).catch((error) => console.error(`couldn't delete photo ${key}`, error))
+
 export const entryResolvers = {
   Query: {
     entries: authed((_parent, _args: unknown, { userId }) =>
@@ -34,6 +44,7 @@ export const entryResolvers = {
       const cafe = await Cafe.findOne({ where: { id: Number(input.cafeId), userId } })
       if (!cafe) throw new GraphQLError("Cafe not found")
       const tags = await findUserTags(tagIds ?? [], userId)
+      checkPhotoKey(input.photoKey, userId)
 
       const entry = await CoffeeEntry.create({ ...fields, cafeId: cafe.id, userId })
       await EntryTag.bulkCreate(tags.map((tag) => ({ entryId: entry.id, tagId: tag.id })))
@@ -47,16 +58,22 @@ export const entryResolvers = {
         const entry = await CoffeeEntry.findOne({ where: { id: Number(id), userId } })
         if (!entry) return null
         const tags = await findUserTags(tagIds ?? [], userId)
+        checkPhotoKey(input.photoKey, userId)
+        const oldPhotoKey = entry.photoKey
 
         await entry.update({ ...fields, cafeId: cafe.id })
         await EntryTag.destroy({ where: { entryId: entry.id } })
         await EntryTag.bulkCreate(tags.map((tag) => ({ entryId: entry.id, tagId: tag.id })))
+        if (oldPhotoKey && oldPhotoKey !== entry.photoKey) await deleteOldPhoto(oldPhotoKey)
         return entry
       },
     ),
     deleteEntry: authed(async (_parent, { id }: { id: string }, { userId }) => {
-      const count = await CoffeeEntry.destroy({ where: { id: Number(id), userId } })
-      return count > 0
+      const entry = await CoffeeEntry.findOne({ where: { id: Number(id), userId } })
+      if (!entry) return false
+      await entry.destroy()
+      if (entry.photoKey) await deleteOldPhoto(entry.photoKey)
+      return true
     }),
   },
 
@@ -67,6 +84,7 @@ export const entryResolvers = {
       const links = await EntryTag.findAll({ where: { entryId: entry.id } })
       return CoffeeTag.findAll({ where: { id: links.map((link) => link.tagId) } })
     },
+    photoUrl: (entry: CoffeeEntry) => (entry.photoKey ? photoViewUrl(entry.photoKey) : null),
   },
 
   Cafe: {
