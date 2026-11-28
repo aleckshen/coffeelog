@@ -1,11 +1,11 @@
 import { Image } from "expo-image"
 import { ImageManipulator, SaveFormat } from "expo-image-manipulator"
 import * as ImagePicker from "expo-image-picker"
-import { ImagePlus } from "lucide-react-native"
+import { ImagePlus, X } from "lucide-react-native"
 import { useState } from "react"
 import { Pressable, View } from "react-native"
 import { useCSSVariable } from "uniwind"
-import { AppText, Button } from "@/components"
+import { AppText } from "@/components"
 
 const MAX_WIDTH = 1600
 
@@ -41,19 +41,31 @@ export function PhotoField({ value, onChange }: PhotoFieldProps) {
         Photo
       </AppText>
       {value ? (
-        <View className="gap-2.5">
-          <View className="h-56 overflow-hidden rounded-xl bg-muted">
+        <View>
+          <Pressable
+            accessibilityLabel="Change photo"
+            accessibilityRole="button"
+            className="h-56 overflow-hidden rounded-xl bg-muted active:opacity-80 disabled:opacity-50"
+            disabled={preparing}
+            onPress={pickPhoto}
+          >
             <Image
               contentFit="cover"
               source={{ uri: value }}
               style={{ flex: 1 }}
               transition={150}
             />
-          </View>
-          <View className="flex-row gap-2">
-            <Button disabled={preparing} label="Change" onPress={pickPhoto} />
-            <Button disabled={preparing} label="Remove" onPress={() => onChange(null)} />
-          </View>
+          </Pressable>
+          <Pressable
+            accessibilityLabel="Remove photo"
+            accessibilityRole="button"
+            className="absolute top-2.5 right-2.5 size-8 items-center justify-center rounded-full bg-black/55 active:opacity-70"
+            disabled={preparing}
+            hitSlop={8}
+            onPress={() => onChange(null)}
+          >
+            <X color="white" size={16} strokeWidth={2.2} />
+          </Pressable>
         </View>
       ) : (
         <Pressable
