@@ -58,6 +58,7 @@ export default function EditEntryScreen() {
           price: entry.price,
           tagIds: entry.tags.map((tag) => tag.id),
           notes: entry.notes ?? "",
+          photo: null,
         }}
         footer={
           <View className="pt-3.5">

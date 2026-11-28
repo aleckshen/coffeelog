@@ -11,10 +11,11 @@ export const entrySchema = z.object({
     .regex(/^\d+(\.\d{1,2})?$/, "Enter a price, like 5.20."),
   tagIds: z.array(z.string()),
   notes: z.string().trim(),
+  photo: z.string().nullable(),
 })
 
 export type EntryFormValues = z.infer<typeof entrySchema>
 
-export function toEntryInput(values: EntryFormValues): EntryInput {
+export function toEntryInput({ photo: _photo, ...values }: EntryFormValues): EntryInput {
   return { ...values, rating: values.rating.toFixed(1), notes: values.notes || null }
 }

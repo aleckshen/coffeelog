@@ -7,6 +7,7 @@ import { ScrollView, View } from "react-native"
 import { AppText, Chip, ModalHeader, RatingSlider, SelectField, TextField } from "@/components"
 import { CAFES } from "@/features/cafe/cafe.queries"
 import { CafePickerSheet } from "@/features/cafe/components/CafePickerSheet/CafePickerSheet"
+import { PhotoField } from "@/features/entry/components/PhotoField/PhotoField"
 import { type EntryFormValues, entrySchema } from "@/features/entry/entry.schema"
 import { TagPickerSheet } from "@/features/tag/components/TagPickerSheet/TagPickerSheet"
 import { TAGS } from "@/features/tag/tag.queries"
@@ -45,6 +46,11 @@ export function EntryForm({ title, defaultValues, onSave, footer }: EntryFormPro
         contentContainerClassName="gap-4.5 px-5 pt-4.5 pb-10"
         keyboardShouldPersistTaps="handled"
       >
+        <Controller
+          control={control}
+          name="photo"
+          render={({ field }) => <PhotoField onChange={field.onChange} value={field.value} />}
+        />
         <Controller
           control={control}
           name="coffeeName"

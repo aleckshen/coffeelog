@@ -22,6 +22,7 @@ export default function NewEntryScreen() {
           price: "",
           tagIds: [],
           notes: "",
+          photo: null,
         }}
         onSave={(values) => createEntry({ variables: { input: toEntryInput(values) } })}
         title="New coffee"

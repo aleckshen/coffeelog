@@ -32,7 +32,19 @@
       "expo-router",
       "expo-font",
       "expo-secure-store",
-      ["expo-build-properties", { "ios": { "enableSceneSupport": true } }]
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "enableSceneSupport": true
+          }
+        }
+      ],
+      "expo-image",
+      [
+        "expo-image-picker",
+        { "photosPermission": "Coffeelog uses your photos so you can add one to a coffee." }
+      ]
     ]
   }
 }
