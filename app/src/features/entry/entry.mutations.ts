@@ -7,6 +7,7 @@ export type EntryInput = {
   rating: string
   notes: string | null
   tagIds: string[]
+  photoKey?: string | null
 }
 
 export const CREATE_ENTRY: TypedDocumentNode<
@@ -34,5 +35,17 @@ export const UPDATE_ENTRY: TypedDocumentNode<
 export const DELETE_ENTRY: TypedDocumentNode<{ deleteEntry: boolean }, { id: string }> = gql`
   mutation DeleteEntry($id: ID!) {
     deleteEntry(id: $id)
+  }
+`
+
+export const CREATE_PHOTO_UPLOAD: TypedDocumentNode<
+  { createPhotoUpload: { key: string; uploadUrl: string } },
+  Record<string, never>
+> = gql`
+  mutation CreatePhotoUpload {
+    createPhotoUpload {
+      key
+      uploadUrl
+    }
   }
 `

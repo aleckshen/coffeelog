@@ -5,12 +5,15 @@ import { EntryForm } from "@/features/entry/components/EntryForm/EntryForm"
 import { CREATE_ENTRY } from "@/features/entry/entry.mutations"
 import { ENTRIES } from "@/features/entry/entry.queries"
 import { toEntryInput } from "@/features/entry/entry.schema"
+import { useUploadPhoto } from "@/features/entry/useUploadPhoto"
 import { TAGS } from "@/features/tag/tag.queries"
 
 export default function NewEntryScreen() {
   const [createEntry] = useMutation(CREATE_ENTRY, {
     refetchQueries: [ENTRIES, CAFES, CAFE, TAGS],
   })
+
+  const toPhotoKey = useUploadPhoto()
 
   return (
     <View className="flex-1 bg-card">
@@ -24,7 +27,10 @@ export default function NewEntryScreen() {
           notes: "",
           photo: null,
         }}
-        onSave={(values) => createEntry({ variables: { input: toEntryInput(values) } })}
+        onSave={async (values) => {
+          const photoKey = await toPhotoKey(values.photo)
+          return createEntry({ variables: { input: { ...toEntryInput(values), photoKey } } })
+        }}
         title="New coffee"
       />
     </View>

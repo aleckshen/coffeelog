@@ -8,6 +8,7 @@ import { EntryForm } from "@/features/entry/components/EntryForm/EntryForm"
 import { DELETE_ENTRY, UPDATE_ENTRY } from "@/features/entry/entry.mutations"
 import { ENTRIES, ENTRY } from "@/features/entry/entry.queries"
 import { toEntryInput } from "@/features/entry/entry.schema"
+import { useUploadPhoto } from "@/features/entry/useUploadPhoto"
 import { TAGS } from "@/features/tag/tag.queries"
 
 export default function EditEntryScreen() {
@@ -23,6 +24,8 @@ export default function EditEntryScreen() {
   const [deleteError, setDeleteError] = useState<string>()
 
   const entry = data?.entry
+
+  const toPhotoKey = useUploadPhoto()
 
   if (!entry) {
     return (
@@ -58,14 +61,17 @@ export default function EditEntryScreen() {
           price: entry.price,
           tagIds: entry.tags.map((tag) => tag.id),
           notes: entry.notes ?? "",
-          photo: null,
+          photo: entry.photoUrl ?? null,
         }}
         footer={
           <View className="pt-3.5">
             <Button label="Delete coffee" onPress={() => setConfirmOpen(true)} variant="block" />
           </View>
         }
-        onSave={(values) => updateEntry({ variables: { id, input: toEntryInput(values) } })}
+        onSave={async (values) => {
+          const photoKey = await toPhotoKey(values.photo)
+          return updateEntry({ variables: { id, input: { ...toEntryInput(values), photoKey } } })
+        }}
         title="Edit coffee"
       />
       <ConfirmDialog
