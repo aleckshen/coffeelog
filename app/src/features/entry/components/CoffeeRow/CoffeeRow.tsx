@@ -1,5 +1,8 @@
+import { Image } from "expo-image"
 import { router, useSegments } from "expo-router"
+import { Image as ImageIcon } from "lucide-react-native"
 import { View } from "react-native"
+import { useCSSVariable } from "uniwind"
 import { AppText, Chip, ListRow, MetaLine } from "@/components"
 import type { CoffeeEntry } from "@/features/entry/entry.queries"
 import { fitOnOneLine } from "@/lib/chips"
@@ -12,6 +15,7 @@ type CoffeeRowProps = {
 
 export function CoffeeRow({ entry, subtitle }: CoffeeRowProps) {
   const segments = useSegments()
+  const muted = useCSSVariable("--color-muted-foreground") as string
   // The Coffee screen lives in both the Log and Cafes stacks; open it in the one you're in.
   const pathname =
     segments[1] === "(cafes)" ? "/(tabs)/(cafes)/entry/[id]" : "/(tabs)/(log)/entry/[id]"
@@ -20,10 +24,17 @@ export function CoffeeRow({ entry, subtitle }: CoffeeRowProps) {
 
   return (
     <ListRow onPress={() => router.push({ pathname, params: { id: entry.id } })}>
-      <View className="size-12 items-center justify-center rounded-full bg-muted">
-        <AppText className="font-serif text-xl text-muted-foreground">
-          {entry.coffeeName[0]}
-        </AppText>
+      <View className="size-12 items-center justify-center overflow-hidden rounded-xl bg-muted">
+        {entry.photoUrl ? (
+          <Image
+            contentFit="cover"
+            source={{ uri: entry.photoUrl, cacheKey: entry.photoKey ?? undefined }}
+            style={{ width: "100%", height: "100%" }}
+            transition={150}
+          />
+        ) : (
+          <ImageIcon color={muted} size={20} strokeWidth={1.7} />
+        )}
       </View>
       <View className="flex-1 gap-1">
         <AppText className="font-sans-semibold">{entry.coffeeName}</AppText>

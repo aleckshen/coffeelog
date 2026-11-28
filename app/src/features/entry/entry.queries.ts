@@ -6,6 +6,8 @@ export type CoffeeEntry = {
   price: string
   rating: string
   createdAt: string
+  photoKey: string | null
+  photoUrl: string | null
   cafe: {
     id: string
     cafeName: string
@@ -25,6 +27,8 @@ export const ENTRIES: TypedDocumentNode<{ entries: CoffeeEntry[] }> = gql`
       price
       rating
       createdAt
+      photoKey
+      photoUrl
       cafe {
         id
         cafeName
@@ -40,7 +44,6 @@ export const ENTRIES: TypedDocumentNode<{ entries: CoffeeEntry[] }> = gql`
 
 export type CoffeeEntryDetails = CoffeeEntry & {
   notes: string | null
-  photoUrl: string | null
 }
 
 export const ENTRY: TypedDocumentNode<{ entry: CoffeeEntryDetails | null }, { id: string }> = gql`
@@ -51,8 +54,9 @@ export const ENTRY: TypedDocumentNode<{ entry: CoffeeEntryDetails | null }, { id
       price
       rating
       notes
-      photoUrl
       createdAt
+      photoKey
+      photoUrl
       cafe {
         id
         cafeName

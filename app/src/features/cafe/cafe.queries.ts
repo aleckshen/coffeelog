@@ -39,6 +39,8 @@ export const CAFE: TypedDocumentNode<{ cafe: CafeDetails | null }, { id: string 
         rating
         price
         createdAt
+        photoKey
+        photoUrl
         cafe {
           id
           cafeName

@@ -1,4 +1,5 @@
 import { useSuspenseQuery } from "@apollo/client/react"
+import { Image } from "expo-image"
 import { router, useLocalSearchParams, useSegments } from "expo-router"
 import type { ReactNode } from "react"
 import { View } from "react-native"
@@ -27,7 +28,19 @@ function CoffeeDetails({ id }: { id: string }) {
 
   return (
     <View>
-      <AppText className="mt-6.5 font-serif text-3xl">{entry.coffeeName}</AppText>
+      {entry.photoUrl && (
+        <View className="mt-6.5 h-64 overflow-hidden rounded-xl bg-muted">
+          <Image
+            contentFit="cover"
+            source={{ uri: entry.photoUrl, cacheKey: entry.photoKey ?? undefined }}
+            style={{ flex: 1 }}
+            transition={150}
+          />
+        </View>
+      )}
+      <AppText className={`font-serif text-3xl ${entry.photoUrl ? "mt-4.5" : "mt-6.5"}`}>
+        {entry.coffeeName}
+      </AppText>
       <MetaLine parts={[entry.cafe.cafeName, entry.cafe.location]} />
       <AppText className="text-sm text-muted-foreground">{formatWhen(entry.createdAt)}</AppText>
       <View className="mt-4.5">
