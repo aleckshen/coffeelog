@@ -17,7 +17,7 @@ export function useUploadPhoto() {
     const response = await fetch(uploadUrl, {
       method: "PUT",
       headers: { "Content-Type": "image/jpeg" },
-      body: await file.blob(),
+      body: await file.arrayBuffer(),
     })
     if (!response.ok) throw new Error(`Upload failed: ${response.status}`)
     return key
