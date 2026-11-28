@@ -1,23 +1,26 @@
 import { useEffect } from "react"
 import { View } from "react-native"
 import Animated, {
+  makeMutable,
   useAnimatedStyle,
-  useSharedValue,
   withRepeat,
   withTiming,
 } from "react-native-reanimated"
 import { cn } from "@/lib/cn"
+
+const opacity = makeMutable(1)
+let pulsing = false
 
 type SkeletonProps = {
   className?: string
 }
 
 export function Skeleton({ className }: SkeletonProps) {
-  const opacity = useSharedValue(1)
-
   useEffect(() => {
+    if (pulsing) return
+    pulsing = true
     opacity.value = withRepeat(withTiming(0.5, { duration: 800 }), -1, true)
-  }, [opacity])
+  }, [])
 
   const pulse = useAnimatedStyle(() => ({ opacity: opacity.value }))
 

@@ -42,8 +42,19 @@ function MinDuration({
     return () => clearTimeout(timer)
   }, [holding, shownAt])
 
-  if (holding) return <Animated.View exiting={FadeOut.duration(150)}>{fallback}</Animated.View>
-  return <Animated.View entering={FadeIn.duration(200)}>{children}</Animated.View>
+  if (holding) {
+    return (
+      <Animated.View exiting={FadeOut.duration(150)} key="fallback">
+        {fallback}
+      </Animated.View>
+    )
+  }
+
+  return (
+    <Animated.View entering={FadeIn.duration(200)} key="content">
+      {children}
+    </Animated.View>
+  )
 }
 
 export function AnimatedSuspense({ children, fallback }: AnimatedSuspenseProps) {
